@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APPLICATION</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Obtém o elemento de scroll
+            var comentariosScroll = document.getElementById('comentarios-scroll');
+
+            // Mantém o scroll sempre para baixo
+            comentariosScroll.scrollTop = comentariosScroll.scrollHeight;
+        });
+    </script>
+    <style>
+        body {
+            display: flex;
+            font-family: Verdana;
+            background-color: rgb(73, 73, 73);
+            color: white;
+            background-image: url('https://images4.alphacoders.com/104/1049330.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            min-height: 100vh;
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Ajuste o valor de opacidade (0.5) conforme desejado */
+            z-index: -1;
+        }
+
+        .Perfil {
+            border: 1px solid black;
+            border-radius: 10px;
+            background-color: rgb(22, 22, 22);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            width: 250px;
+            height: 300px;
+        }
+
+        .icon {
+            border: 2px solid black;
+            border-radius: 100px;
+        }
+
+        .right {
+            border: 1px solid black;
+            border-radius: 5px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            right: 8px;
+            width: 300px;
+            height: 100%;
+            top: 8px;
+            padding: 20px;
+            background-color: rgb(37, 37, 37);
+        }
+
+        .left {
+            border: 1px solid black;
+            border-radius: 5px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            left: 8px;
+            width: 300px;
+            height: 100%;
+            top: 8px;
+            background-color: rgb(37, 37, 37);
+        }
+
+        #logout {
+            position: fixed;
+            bottom: 15px;
+            left: 20px;
+        }
+
+        #btnClearComment {
+            margin: 10px;
+            height: 40px;
+        }
+
+        #btnUpdateComment {
+            margin-bottom: 20px;
+            height: 40px;
+        }
+
+        #coment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #enviarcoment {
+            margin: 10px;
+            height: 40px;
+        }
+
+        textarea {
+            width: 258px;
+            border-radius: 10px;
+        }
+
+        .botoes {
+            justify-content: center;
+            width: 100%;
+            height: 80px;
+            display: flex;
+        }
+
+        .h4 {
+            border: 1px solid rgb(255, 255, 255);
+            padding: 7px;
+            border-radius: 20px;
+            background-color: rgb(10, 10, 10);
+        }
+
+        h5 {
+            font-size: 7px;
+            margin-bottom: 10px;
+        }
+
+        h6 {
+            font-size: 10px;
+        }
+
+        p {
+            margin-bottom: 2px;
+        }
+
+        .comment-area {
+            height: 400px;
+            /* Defina a altura desejada para a área de comentários */
+            overflow: auto;
+            /* Adiciona uma barra de rolagem quando necessário */
+            border: 1px solid #000000;
+            /* Adicione uma borda para melhorar a aparência */
+            padding: 10px;
+            /* Adicione um espaçamento interno */
+            background-color: rgb(22, 22, 22);
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .comment-area::-webkit-scrollbar {
+            width: 10px;
+            /* Largura da barra de rolagem */
+        }
+
+        .comment-area::-webkit-scrollbar-track {
+            background-color: #222;
+            /* Cor de fundo da área de rastreamento */
+        }
+
+        .comment-area::-webkit-scrollbar-thumb {
+            background-color: #555;
+            /* Cor do polegar da barra de rolagem */
+        }
+
+        .comment-area::-webkit-scrollbar-thumb:hover {
+            background-color: #888;
+            /* Cor do polegar da barra de rolagem ao passar o mouse */
+        }
+    </style>
+
+    <body class="bg-secondary.bg-gradient">
+        <div class="left">
+            <div class="Perfil">
+                <img class="icon" src="<%=conta.perfil%>" width="150" height="150">
+                <h6>Sua conta</h6>
+                <h3 class="profile-username">
+                    <%=conta.username%>
+                </h3>
+                <form action="/login/content" method="POST">
+                    <input type="hidden" name="username" value="<%=conta.username%>">
+                    <input type="hidden" name="password" value="<%=conta.password%>">
+                    <input type="hidden" name="perfil" value="<%=conta.perfil%>">
+                    <button type="submit" class="btn-clear btn btn-outline-warning" id="btnUpdateComment">Atualizar
+                        Chat</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <a href="/login"><button class="btn btn-danger" id="logout">LogOut</button></a>
+        <div class="right">
+            <p class="h4">Chat - Comentários</p>
+            <div id='comentarios-scroll' class="comment-area">
+                <!-- Aqui é onde os comentários serão exibidos -->
+                <% comentario.forEach(function(comentario) { %>
+                    <div>
+                        <img class="icon" src="<%= comentario.perfil %>" width="50" height="50"><strong>
+                            <%=comentario.username%>
+                        </strong>:<p>
+                            <%= comentario.coment %>
+                        </p>
+                        <h5>
+                            <%= comentario.createdAt%>
+                        </h5>
+                    </div>
+                    <% }); %>
+            </div>
+            <form id="coment" action="/comment" method="post">
+                <input type="hidden" id="username" name="username" value="<%=conta.username%>">
+                <input type="hidden" id="perfil" name="perfil" value="<%=conta.perfil%>">
+                <textarea id="coment" name="coment" placeholder="Enviar comentario..."></textarea>
+                <div class="botoes">
+                    <button type="submit" id="enviarcoment" class="btn btn-outline-primary">Enviar</button>
+            </form>
+            <form action="/clear-comment" method="POST">
+                <input type="hidden" name="username" value="<%=conta.username%>">
+                <input type="hidden" name="password" value="<%=conta.password%>">
+                <button type="submit" class="btn-clear btn btn-outline-danger" id="btnClearComment">Apagar</button>
+        </div>
+        </form>
+        </div>
+    </body>
+
+</html>
