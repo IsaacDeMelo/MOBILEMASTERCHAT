@@ -19,6 +19,10 @@ const Conta = sequelize.define('Conta', {
     perfil: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    yen:{
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
     }
   });
 
