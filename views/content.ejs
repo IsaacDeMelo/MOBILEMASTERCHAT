@@ -8,8 +8,6 @@
     <title>APPLICATION</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
-
-<body>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Obtém o elemento de scroll
@@ -34,8 +32,10 @@
     </script>
     <style>
         body {
+            position: relative; 
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             font-family: Verdana;
             background-color: rgb(73, 73, 73);
             color: white;
@@ -46,19 +46,6 @@
             background-position: center;
             min-height: 100vh;
         }
-
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            /* Ajuste o valor de opacidade (0.5) conforme desejado */
-            z-index: -1;
-        }
-
         body::-webkit-scrollbar {
             width: 10px;
             /* Largura da barra de rolagem */
@@ -291,9 +278,9 @@
         }
 
         .center {
-            margin-top: 30px;
-            padding: 30px;
-            width: 450px;
+            margin-top: 10px;
+            padding: 0px;
+            width: 300px;
             height: 700px;
             background-color: rgb(22, 22, 22);
             border-radius: 10px;
@@ -310,26 +297,26 @@
         }
         .hidden {
             display: flex;
-            left: -200px;
+            left: -400px;
             opacity: 0;
             transition: all 0.3s ease;
         }
 
         .visible {
             display: flex;
-            left: 8px; 
+            left: 0px; 
             opacity: 1;
             transition: all 0.3s ease;
         }
         .hiddenR{
             display: flex;
-            right: -200px;
+            right: -400px;
             opacity: 0;
             transition: all 0.3s ease;
         }
         .visibleR {
             display: flex;
-            right: 8px; 
+            right: 0px; 
             opacity: 1;
             transition: all 0.3s ease;
         }
@@ -358,6 +345,12 @@
             left: 165px;
             z-index: 5;
         }
+        main{
+            margin: 20px; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+        }
 
         #imgDaCena {
             border-radius: 10px;
@@ -366,7 +359,9 @@
 
         #textoCena {
             border: 1px solid white;
-            border-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            width: 300px; 
             padding: 10px;
         }
         #showLeftButton{
@@ -390,14 +385,14 @@
         }
         main{
             position: absolute;
-            width: 450px; 
+            max-width: 320px; 
             overflow: hidden;
         }
     </style>
-
-    <body class="bg-secondary.bg-gradient">
-        <main>
-            <img id="title" width="450" src="../cooltext436912139547057.png">
+<main>
+    <body>
+        
+            <img id="title" width="250" src="../cooltext436912139547057.png">
   
         
         <div class="hidden" id="left">
@@ -424,7 +419,7 @@
                     <input type="hidden" name="perfil" placeholder="Perfil (URL)" autocomplete="off"
                         value="<%=conta.perfil%>" required>
                     <input type="text" name="img" placeholder="Imagem (URL)" autocomplete="off">
-                    <input type="text" name="fala" placeholder="Digite sua fala aqui" autocomplete="off">
+                    <input type="hidden" name="fala" placeholder="Digite sua fala aqui" autocomplete="off">
                     <textarea class="txt" name="texto"
                         placeholder="Texto, adicione seus atributos ao final ou durante a cena." autocomplete="off"
                         required></textarea>
@@ -451,7 +446,7 @@
                             </p>
                         </div>
                     </div>
-                    <img id="imgDaCena" src="<%=cena[i].img%>%>" width="400">
+                    <img id="imgDaCena" src="<%=cena[i].img%>%>" width="350">
                     <p id="textoCena">
                         <%=cena[i].texto%>
                     </p>
@@ -494,7 +489,6 @@
         </div>
         </form>
         </div>
-    </main>
     </body>
-
-</html>
+</main>
+</html> 
