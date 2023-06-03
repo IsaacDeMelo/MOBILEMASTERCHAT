@@ -42,11 +42,11 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/criar-cena', async (req, res) => {
-  const { username, perfil, img, texto } = req.body;
+  const { username, perfil, img, texto, fala } = req.body;
   try {
     const conta = await Conta.findOne({ where: { username, perfil } });
     if (conta) {
-      const cenaCriada = await Cena.create({ username, perfil, img, texto });
+      const cenaCriada = await Cena.create({ username, perfil, img, texto, fala });
       const comentario = await Comentario.findAll();
       const cena = await Cena.findAll();
       res.render('content', { conta: conta, comentario: comentario, cena: cena});

@@ -26,6 +26,10 @@ const Cena = sequelize.define('Cena', {
     texto: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    fala:{
+      type: DataTypes.STRING,
+      allowNull: true,
     }
   });
 

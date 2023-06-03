@@ -17,6 +17,19 @@
 
             // Mantém o scroll sempre para baixo
             comentariosScroll.scrollTop = comentariosScroll.scrollHeight;
+
+            const showLeftButton = document.getElementById('showLeftButton');
+            const showRightButton = document.getElementById('showRightButton');
+            const leftElement = document.getElementById('left');
+            const rightElement = document.getElementById('right');
+
+            showLeftButton.addEventListener('click', () => {
+                leftElement.classList.toggle('visible');
+            });
+
+            showRightButton.addEventListener('click', () => {
+                rightElement.classList.toggle('visibleR');
+            });
         });
     </script>
     <style>
@@ -45,6 +58,7 @@
             /* Ajuste o valor de opacidade (0.5) conforme desejado */
             z-index: -1;
         }
+
         body::-webkit-scrollbar {
             width: 10px;
             /* Largura da barra de rolagem */
@@ -64,15 +78,17 @@
             background-color: #888;
             /* Cor do polegar da barra de rolagem ao passar o mouse */
         }
-        #title{
+
+        #title {
             position: fixed;
-            margin: 0; 
-            z-index: 5; 
+            margin: 0;
+            z-index: 5;
         }
-        .relativo{
-            width: 100%; 
-            position: absolute; 
-            display: flex; 
+
+        .relativo {
+            width: 100%;
+            position: absolute;
+            display: flex;
             justify-content: center;
         }
 
@@ -94,39 +110,39 @@
             border-radius: 100px;
         }
 
-        .right {
+        #right {
             border: 1px solid black;
             border-radius: 5px;
-            position: fixed;
+            position: absolute;
             display: flex;
             flex-direction: column;
             align-items: center;
-            right: 8px;
             width: 300px;
             height: 100%;
             top: 8px;
             padding: 20px;
             background-color: rgb(37, 37, 37);
+            z-index: 6;
         }
 
-        .left {
+        #left {
             border: 1px solid black;
             border-radius: 5px;
-            position: fixed;
-            display: flex;
+            position: absolute;
             flex-direction: column;
             align-items: center;
-            left: 8px;
             width: 300px;
             height: 100%;
             top: 8px;
             background-color: rgb(37, 37, 37);
+            z-index: 7;
         }
 
         #logout {
-            position: fixed;
+            position: absolute;
             bottom: 15px;
             left: 20px;
+            z-index: 5; 
         }
 
         #btnClearComment {
@@ -160,6 +176,7 @@
             width: 100%;
             height: 80px;
             display: flex;
+            z-index: 10;
         }
 
         .h4 {
@@ -168,22 +185,25 @@
             border-radius: 20px;
             background-color: rgb(10, 10, 10);
         }
-        .cena{
+
+        .cena {
             margin-top: 30px;
-            display: flex; 
+            display: flex;
             flex-direction: column;
             align-items: center;
-            border: 1px solid black; 
-            border-radius: 10px; 
-            padding: 10px; 
-            background-color:rgb(22, 22, 22);
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: rgb(22, 22, 22);
             font-family: "Montserrat", sans-serif;
         }
-        .cena form{
-            display: flex; 
+
+        .cena form {
+            display: flex;
             flex-direction: column;
             align-items: center;
         }
+
         h5 {
             font-size: 7px;
             margin-bottom: 10px;
@@ -196,9 +216,11 @@
         p {
             margin-bottom: 2px;
         }
-        .btn-outline-success{
-            margin-top: 20px; 
+
+        .btn-outline-success {
+            margin-top: 20px;
         }
+
         .comment-area {
             height: 400px;
             /* Defina a altura desejada para a área de comentários */
@@ -232,6 +254,7 @@
             background-color: #888;
             /* Cor do polegar da barra de rolagem ao passar o mouse */
         }
+
         .comment-area::-webkit-scrollbar {
             width: 10px;
             /* Largura da barra de rolagem */
@@ -251,68 +274,136 @@
             background-color: #888;
             /* Cor do polegar da barra de rolagem ao passar o mouse */
         }
-        p{
-            color: white; 
+
+        p {
+            color: white;
         }
-        input{
-            background-color:#131313;
-            color: white; 
-            border-radius: 10px; 
+
+        input {
+            background-color: #131313;
+            color: white;
+            border-radius: 10px;
         }
-        .txt{
-            border-radius: 0px; 
-            height: 70px; 
+
+        .txt {
+            border-radius: 0px;
+            height: 70px;
         }
-        .center{
+
+        .center {
             margin-top: 30px;
-            padding: 30px;  
-            width: 500px;
+            padding: 30px;
+            width: 450px;
             height: 700px;
-            background-color:rgb(22, 22, 22);
-            border-radius: 10px; 
+            background-color: rgb(22, 22, 22);
+            border-radius: 10px;
             border: 3px solid rgb(10, 10, 10);
             display: flex;
             justify-content: center;
         }
-        .subperfil{
-            display: flex; 
+
+        .subperfil {
+            display: flex;
             justify-content: center;
             flex-direction: column;
             align-items: center;
         }
-        .cenas{
+        .hidden {
+            display: flex;
+            left: -200px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .visible {
+            display: flex;
+            left: 8px; 
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+        .hiddenR{
+            display: flex;
+            right: -200px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        .visibleR {
+            display: flex;
+            right: 8px; 
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+        .cenas {
             width: 100%;
-            height: auto; 
-            overflow: auto; 
-            padding: 30px; 
-            background-color:rgb(10, 10, 10);
+            height: auto;
+            overflow: auto;
+            padding: 30px;
+            background-color: rgb(10, 10, 10);
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        #perfilCene{
-            margin-top: 40px; 
+        
+        .botoess{
+            display: flex; 
         }
-        #delCene{
-            position: fixed; 
+
+        #perfilCene {
+            margin-top: 40px;
+        }
+
+        #delCene {
+            position: absolute;
             bottom: 15px;
-            left: 165px; 
-            z-index: 10;
+            left: 165px;
+            z-index: 5;
         }
-        #textoCena{
-            border: 1px solid white; 
-            border-radius: 10px; 
-            padding: 10px; 
+
+        #imgDaCena {
+            border-radius: 10px;
+            border: 1px solid white;
+        }
+
+        #textoCena {
+            border: 1px solid white;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        #showLeftButton{
+            
+            bottom: 0;
+        }
+        #showRightButton {
+            
+            bottom: 20px; 
+        }
+        
+        .upperfil {
+            display: flex;
+            justify-content: center;
+        }
+        .botoes{
+            position: fixed;
+            width: 200px; 
+            height: 50px; 
+            bottom: 0; 
+        }
+        main{
+            position: absolute;
+            width: 450px; 
+            overflow: hidden;
         }
     </style>
 
     <body class="bg-secondary.bg-gradient">
-        <div class="relativo">
-            <img id="title" src="../cooltext436912139547057.png">
-        </div>
-        <div class="left">
+        <main>
+            <img id="title" width="450" src="../cooltext436912139547057.png">
+  
+        
+        <div class="hidden" id="left">
             <div class="Perfil">
-                <a href="/configUser/<%=conta.id%>"><img class="icon" src="<%=conta.perfil%>" width="150" height="150"></a>
+                <a id="icon" href="/configUser/<%=conta.id%>"><img class="icon" src="<%=conta.perfil%>" width="150"
+                        height="150"></a>
                 <h6>Sua conta</h6>
                 <h3 class="profile-username">
                     <%=conta.username%>
@@ -323,22 +414,27 @@
                     <input type="hidden" name="perfil" value="<%=conta.perfil%>">
                     <button type="submit" class="btn-clear btn btn-outline-warning" id="btnUpdateComment">Atualizar
                         Chat</button>
-                    </div>
-                </form>
-                <div class="cena">
-                <h4>Battlefield</h4>
-                <form action="/criar-cena" method="POST">
-                    <input type="hidden" name="username" placeholder="Username" autocomplete="off" value="<%=conta.username%>">
-                    <input type="hidden" name="perfil" placeholder="Perfil (URL)" autocomplete="off" value="<%=conta.perfil%>" required>
-                    <input type="text" name="img" placeholder="Imagem (URL)" autocomplete="off">
-                    <textarea class="txt" name="texto" placeholder="Texto, adicione seus atributos ao final ou durante a cena." autocomplete="off" required></textarea>
-    <button type="submit" class="btn btn-outline-success">Criar Cena</button>
-                </div>
-                </div>
             </div>
-  </form>
+            </form>
+            <div class="cena">
+                <h4>Battlefield</h4>
+                <form id="crea" action="/criar-cena" method="POST">
+                    <input type="hidden" name="username" placeholder="Username" autocomplete="off"
+                        value="<%=conta.username%>">
+                    <input type="hidden" name="perfil" placeholder="Perfil (URL)" autocomplete="off"
+                        value="<%=conta.perfil%>" required>
+                    <input type="text" name="img" placeholder="Imagem (URL)" autocomplete="off">
+                    <input type="text" name="fala" placeholder="Digite sua fala aqui" autocomplete="off">
+                    <textarea class="txt" name="texto"
+                        placeholder="Texto, adicione seus atributos ao final ou durante a cena." autocomplete="off"
+                        required></textarea>
+                    <button type="submit" class="btn btn-outline-success">Criar Cena</button>
+            </div>
         </div>
-        <a href="/login"><button class="btn btn-danger" id="logout">LogOut</button></a> 
+        </div>
+        </form>
+        </div>
+        <a href="/login"><button class="btn btn-danger" id="logout">LogOut</button></a>
         <form action="/deleteCena" method="post">
             <input type="hidden" name="username" value="<%=conta.username%>">
             <input type="hidden" name="password" value="<%=conta.password%>">
@@ -346,16 +442,28 @@
         </form>
         <div class="center">
             <div class="cenas">
-                <% for (var i = cena.length - 1; i >= 0; i--){ %>
-                    <div class="subperfil">
-                    <img src="<%=cena[i].perfil%>" id="perfilCene" class="icon" width="50" height="50"><p id="userCene"><%=cena[i].username%></p>
+                <% for (var i=cena.length - 1; i>= 0; i--){ %>
+                    <div class="upperfil">
+                        <div class="subperfil">
+                            <img src="<%=cena[i].perfil%>" id="perfilCene" class="icon" width="50" height="50">
+                            <p id="userCene">
+                                <%=cena[i].username%>
+                            </p>
+                        </div>
                     </div>
-                    <img src="<%=cena[i].img%>%>" width="400">
-                    <p id="textoCena"><%=cena[i].texto%></p>
-                <% } %>
+                    <img id="imgDaCena" src="<%=cena[i].img%>%>" width="400">
+                    <p id="textoCena">
+                        <%=cena[i].texto%>
+                    </p>
+                    <% } %>
             </div>
         </div>
-        <div class="right">
+        <div class="botoes">
+        <button id="showLeftButton" class="btn btn-outline-warning"><<</button>
+        <button id="showRightButton" class="btn btn-outline-warning">>></button>
+        </div>
+
+        <div class="hiddenR" id="right">
             <p class="h4">Chat - Comentários</p>
             <div id='comentarios-scroll' class="comment-area">
                 <!-- Aqui é onde os comentários serão exibidos -->
@@ -376,16 +484,17 @@
                 <input type="hidden" id="username" name="username" value="<%=conta.username%>">
                 <input type="hidden" id="perfil" name="perfil" value="<%=conta.perfil%>">
                 <textarea id="coment" name="coment" placeholder="Enviar comentario..."></textarea>
-                <div class="botoes">
-                    <button type="submit" id="enviarcoment" class="btn btn-outline-primary">Enviar</button>
+                <div class="botoess">
+                    <button type="submit" class="btn btn-outline-primary">Enviar</button>
             </form>
             <form action="/clear-comment" method="POST">
                 <input type="hidden" name="username" value="<%=conta.username%>">
                 <input type="hidden" name="password" value="<%=conta.password%>">
-                <button type="submit" class="btn-clear btn btn-outline-danger" id="btnClearComment">Apagar</button>
+                <button type="submit" class="btn-clear btn btn-outline-danger">Apagar</button>
         </div>
         </form>
         </div>
+    </main>
     </body>
 
 </html>
