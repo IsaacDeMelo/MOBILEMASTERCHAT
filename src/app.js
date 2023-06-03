@@ -1,7 +1,8 @@
 import express from "express";
 import database from './db.js';
 import User from './user.js';
-import Conta from './contas.js';
+import Conta from './Contas.js';
+import Cena from './cena.js'
 import Comentario from './comentarios.js'
 import Sequelize from 'sequelize';
 
@@ -38,13 +39,73 @@ app.get('/login', (req, res) => {
   res.render('login');
 });
 
+app.post('/criar-cena', async (req, res) => {
+  const { username, perfil, img, texto } = req.body;
+  try {
+    const conta = await Conta.findOne({ where: { username, perfil } });
+    if (conta) {
+      const cenaCriada = await Cena.create({ username, perfil, img, texto });
+      const comentario = await Comentario.findAll();
+      const cena = await Cena.findAll();
+      res.render('content', { conta: conta, comentario: comentario, cena: cena});
+    } else {
+      res.send('Invalid');
+    }
+  } catch (error) {
+    console.error(error);
+    res.redirect('/');
+  }
+});
+
+app.get('/configUser/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    // Encontre o usuário pelo ID
+    const conta = await Conta.findByPk(id);
+    if (conta) {
+      // Exclua o usuário
+      res.render('config', { conta: conta });
+    } else {
+      res.send('Usuário não encontrado!');
+    }
+  } catch (error) {
+    console.error(error);
+    res.send('Ocorreu um erro ao excluir a conta.');
+  }
+});
+
+app.post('/updateUser/:id', async (req, res) => {
+  const { id } = req.params;
+  const { username, password, perfil } = req.body;
+  try {
+    // Encontre o usuário pelo ID
+    const conta = await Conta.findByPk(id);
+    if (conta) {
+      // Atualize as informações da conta com os novos valores
+      conta.username = username;
+      conta.password = password;
+      conta.perfil = perfil;
+      await conta.save();
+      const comentario =  await Comentario.findAll();
+      const cena = await Cena.findAll();
+      res.render('content', { conta: conta, comentario: comentario, cena: cena })
+    } else {
+      res.send('Usuário não encontrado!');
+    }
+  } catch (error) {
+    console.error(error);
+    res.send('Ocorreu um erro ao atualizar as informações do usuário.');
+  }
+});
+
 app.post('/login/content', async (req, res) => {
   const { username, password } = req.body;
   try {
     const conta = await Conta.findOne({ where: { username, password } });
     const comentario =  await Comentario.findAll();
+    const cena = await Cena.findAll();
     if (conta) {
-      res.render('content', { conta: conta, comentario: comentario })
+      res.render('content', { conta: conta, comentario: comentario, cena: cena})
     } else {
       res.send('Invalid username or password');
     }
@@ -69,12 +130,14 @@ app.post('/clear-comment', async (req, res) => {
     }
     const conta = await Conta.findOne({ where: { username, password } });
     const comentario =  await Comentario.findAll();
-    res.render('content', { conta: conta, comentario: comentario })
+    const cena = await Cena.findAll();
+    res.render('content', { conta: conta, comentario: comentario, cena: cena })
   } catch (error) {
     const conta = await Conta.findOne({ where: { username, password } });
     const comentario =  await Comentario.findAll();
+    const cena = await Cena.findAll();
     console.error(error);
-    res.render('content', { conta: conta, comentario: comentario })
+    res.render('content', { conta: conta, comentario: comentario, cena: cena })
   }
 });
 
@@ -84,14 +147,40 @@ app.post('/comment', async (req, res) => {
     const conta = await Conta.findOne({ where: { username, perfil } });
     if (conta) {
       const comentarioCriado = await Comentario.create({ username, perfil, coment });
+      const cena = await Cena.findAll();
       const comentario =  await Comentario.findAll();
-      res.render('content', { conta: conta, comentario: comentario});
+      res.render('content', { conta: conta, comentario: comentario, cena: cena});
     } else {
       res.send('Invalid username or perfil');
     }
   } catch (error) {
     console.error(error);
     res.redirect('/');
+  }
+});
+
+app.post('/deleteCena', async (req, res) =>{
+  try {
+    const { username, password } = req.body
+    // Encontre o último comentário do usuário logado
+    const lastScene = await Cena.findOne({
+      where: { username },
+      order: [['createdAt', 'DESC']] // Ordena por data de criação descendente para obter o último comentário
+    });
+
+    if (lastScene) {
+      // Se existir um último comentário, remova-o
+      await lastScene.destroy();
+    }
+    const conta = await Conta.findOne({ where: { username, password } });
+    const comentario =  await Comentario.findAll();
+    const cena = await Cena.findAll();
+    res.render('content', { conta: conta, comentario: comentario, cena: cena })
+  } catch (error) {
+    const conta = await Conta.findOne({ where: { username, password } });
+    const comentario =  await Comentario.findAll();
+    console.error(error);
+    res.render('content', { conta: conta, comentario: comentario })
   }
 });
 
