@@ -1,11 +1,11 @@
 import express from "express";
+import axios from 'axios';
 import database from './db.js';
 import User from './user.js';
 import Conta from './contas.js';
 import Cena from './cena.js'
 import Comentario from './comentarios.js'
 import Sequelize from 'sequelize';
-import path from 'path';
 
 const {Op} = Sequelize;
 const app = express();
@@ -21,9 +21,36 @@ app.use((req, res, next) => {
   }
   next();
 });
-
+app.get('/api/comentarios', async (req, res) => {
+  try {
+    const comentarios = await Comentario.findAll();
+    // Renderize os comentários em um formato adequado (por exemplo, JSON ou HTML) e envie a resposta
+    res.json(comentarios);
+  } catch (error) {
+    console.error('Erro ao buscar os comentários:', error);
+    res.status(500).send('Erro ao buscar os comentários');
+  }
+});
 app.get('/', (req, res) => {
   res.render('index');
+});
+
+app.post('/api/comentarios', async (req, res) => {
+  const { username, perfil, coment } = req.body;
+  try {
+    const conta = await Conta.findOne({ where: { username, perfil } });
+    if (conta) {
+      const comentarioCriado = await Comentario.create({ username, perfil, coment });
+      const cena = await Cena.findAll();
+      const comentario =  await Comentario.findAll();
+      res.render('content', { conta: conta, comentario: comentario, cena: cena});
+    } else {
+      res.send('Invalid username or perfil');
+    }
+  } catch (error) {
+    console.error(error);
+    res.redirect('/');
+  }
 });
 
 app.post('/register', async (req, res) => {

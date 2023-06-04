@@ -7,402 +7,478 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APPLICATION</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Obtém o elemento de scroll
-            var comentariosScroll = document.getElementById('comentarios-scroll');
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $(document).ready(function () {
+            function atualizarConteudo() {
+                $.ajax({
+                    url: '/api/comentarios',
+                    method: 'GET',
+                    success: function (data) {
+                        // Limpar o conteúdo anterior dos comentários
+                        $('#comentarios-scroll').empty();
 
-            // Mantém o scroll sempre para baixo
-            comentariosScroll.scrollTop = comentariosScroll.scrollHeight;
+                        // Iterar sobre os dados recebidos e adicionar cada comentário à div
+                        data.forEach(function (comentario) {
+                            var divComentario = $('<div>');
+                            var imgPerfil = $('<img>', {
+                                class: 'icon',
+                                src: comentario.perfil,
+                                width: '50',
+                                height: '50'
+                            });
+                            var strongUsername = $('<strong>').text(comentario.username);
+                            var pComentario = $('<p>').text(comentario.coment);
+                            var h5CreatedAt = $('<h5>').text(comentario.createdAt);
 
-            const showLeftButton = document.getElementById('showLeftButton');
-            const showRightButton = document.getElementById('showRightButton');
-            const leftElement = document.getElementById('left');
-            const rightElement = document.getElementById('right');
+                            divComentario.append(imgPerfil, strongUsername, ':', pComentario, h5CreatedAt);
+                            $('#comentarios-scroll').append(divComentario);
+                        });
+                    },
+                    error: function (error) {
+                        console.error('Erro ao carregar os comentários:', error);
+                    }
+                });
+            }
+            $('#coment').submit(function (event) {
+                event.preventDefault(); // Evita o envio do formulário tradicional
 
-            showLeftButton.addEventListener('click', () => {
-                leftElement.classList.toggle('visible');
+                var formData = $(this).serialize(); // Serializa os dados do formulário
+
+                $.ajax({
+                    url: '/api/comentarios',
+                    method: 'POST',
+                    data: formData,
+                    success: function (data) {
+                        $('#coment-input').val(''); // Limpa o campo de comentário após o envio
+                        atualizarConteudo(); // Atualiza os comentários exibidos na página
+                        let comentariosScroll = document.getElementById('comentarios-scroll');
+
+                        // Mantém o scroll sempre para baixo
+                        comentariosScroll.scrollTop = comentariosScroll.scrollHeight;
+                    },
+                    error: function (error) {
+                        console.error('Erro ao enviar o comentário:', error);
+                    }
+                });
             });
+            setInterval(atualizarConteudo, 500);
+            setInterval(() => {
+                let comentariosScroll = document.getElementById('comentarios-scroll');
 
-            showRightButton.addEventListener('click', () => {
-                rightElement.classList.toggle('visibleR');
-            });
+                // Mantém o scroll sempre para baixo
+                comentariosScroll.scrollTop = comentariosScroll.scrollHeight;
+
+            }, 500);
         });
-    </script>
-    <style>
-        body {
-            position: relative; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-family: Verdana;
-            background-color: rgb(73, 73, 73);
-            color: white;
-            background-image: url('https://images4.alphacoders.com/104/1049330.jpg');
-            background-attachment: fixed;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            min-height: 100vh;
-        }
-        body::-webkit-scrollbar {
-            width: 10px;
-            /* Largura da barra de rolagem */
-        }
+        // Obtém o elemento de scroll
+        const showLeftButton = document.getElementById('showLeftButton');
+        const showRightButton = document.getElementById('showRightButton');
+        const leftElement = document.getElementById('left');
+        const rightElement = document.getElementById('right');
 
-        body::-webkit-scrollbar-track {
-            background-color: #222;
-            /* Cor de fundo da área de rastreamento */
-        }
+        showLeftButton.addEventListener('click', () => {
+            leftElement.classList.toggle('visible');
+        });
 
-        body::-webkit-scrollbar-thumb {
-            background-color: #555;
-            /* Cor do polegar da barra de rolagem */
-        }
+        showRightButton.addEventListener('click', () => {
+            rightElement.classList.toggle('visibleR');
+        });
 
-        body::-webkit-scrollbar-thumb:hover {
-            background-color: #888;
-            /* Cor do polegar da barra de rolagem ao passar o mouse */
-        }
+    });
+</script>
+<style>
+    body {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: Verdana;
+        background-color: rgb(73, 73, 73);
+        color: white;
+        background-image: url('https://images4.alphacoders.com/104/1049330.jpg');
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 100vh;
+    }
 
-        #title {
-            position: fixed;
-            margin: 0;
-            z-index: 5;
-        }
+    body::-webkit-scrollbar {
+        width: 10px;
+        /* Largura da barra de rolagem */
+    }
 
-        .relativo {
-            width: 100%;
-            position: absolute;
-            display: flex;
-            justify-content: center;
-        }
+    body::-webkit-scrollbar-track {
+        background-color: #222;
+        /* Cor de fundo da área de rastreamento */
+    }
 
-        .Perfil {
-            border: 1px solid black;
-            border-radius: 10px;
-            background-color: rgb(22, 22, 22);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-            width: 250px;
-            height: 300px;
-        }
+    body::-webkit-scrollbar-thumb {
+        background-color: #555;
+        /* Cor do polegar da barra de rolagem */
+    }
 
-        .icon {
-            border: 2px solid black;
-            border-radius: 100px;
-        }
+    body::-webkit-scrollbar-thumb:hover {
+        background-color: #888;
+        /* Cor do polegar da barra de rolagem ao passar o mouse */
+    }
 
-        #right {
-            border: 1px solid black;
-            border-radius: 5px;
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 300px;
-            top: 8px;
-            padding: 20px;
-            height: 700px; 
-            background-color: rgb(37, 37, 37);
-            z-index: 6;
-        }
+    #title {
+        position: fixed;
+        margin: 0;
+        z-index: 5;
+    }
 
-        #left {
-            border: 1px solid black;
-            border-radius: 5px;
-            position: absolute;
-            flex-direction: column;
-            align-items: center;
-            width: 300px;
-            height: 700px;
-            top: 8px;
-            background-color: rgb(37, 37, 37);
-            z-index: 7;
-        }
+    .relativo {
+        width: 100%;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+    }
 
-        #logout {
-            position: absolute;
-            bottom: 15px;
-            left: 20px;
-            z-index: 5; 
-        }
+    .Perfil {
+        border: 1px solid black;
+        border-radius: 10px;
+        background-color: rgb(22, 22, 22);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+        width: 250px;
+        height: 300px;
+    }
 
-        #btnClearComment {
-            margin: 10px;
-            height: 40px;
-        }
+    .icon {
+        border: 2px solid black;
+        border-radius: 100px;
+    }
 
-        #btnUpdateComment {
-            margin-bottom: 20px;
-            height: 40px;
-        }
+    #right {
+        border: 1px solid black;
+        border-radius: 5px;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 300px;
+        top: 8px;
+        padding: 20px;
+        height: 700px;
+        background-color: rgb(37, 37, 37);
+        z-index: 6;
+    }
 
-        #coment {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    #left {
+        border: 1px solid black;
+        border-radius: 5px;
+        position: absolute;
+        flex-direction: column;
+        align-items: center;
+        width: 300px;
+        height: 700px;
+        top: 8px;
+        background-color: rgb(37, 37, 37);
+        z-index: 7;
+    }
 
-        #enviarcoment {
-            margin: 10px;
-            height: 40px;
-        }
+    #logout {
+        position: absolute;
+        bottom: 15px;
+        left: 20px;
+        z-index: 5;
+    }
 
-        textarea {
-            width: 258px;
-            border-radius: 10px;
-        }
+    #btnClearComment {
+        margin: 10px;
+        height: 40px;
+    }
 
-        .botoes {
-            justify-content: center;
-            width: 100%;
-            height: 80px;
-            display: flex;
-            z-index: 10;
-        }
+    #btnUpdateComment {
+        margin-bottom: 20px;
+        height: 40px;
+    }
 
-        .h4 {
-            border: 1px solid rgb(255, 255, 255);
-            padding: 7px;
-            border-radius: 20px;
-            background-color: rgb(10, 10, 10);
-        }
+    #coment {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        .cena {
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border: 1px solid black;
-            border-radius: 10px;
-            padding: 10px;
-            background-color: rgb(22, 22, 22);
-            font-family: "Montserrat", sans-serif;
-        }
+    #enviarcoment {
+        margin: 10px;
+        height: 40px;
+    }
 
-        .cena form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    textarea {
+        width: 258px;
+        border-radius: 10px;
+    }
 
-        h5 {
-            font-size: 7px;
-            margin-bottom: 10px;
-        }
+    .botoes {
+        justify-content: center;
+        width: 100%;
+        height: 80px;
+        display: flex;
+        z-index: 10;
+    }
 
-        h6 {
-            font-size: 10px;
-        }
+    .h4 {
+        border: 1px solid rgb(255, 255, 255);
+        padding: 7px;
+        border-radius: 20px;
+        background-color: rgb(10, 10, 10);
+    }
 
-        p {
-            margin-bottom: 2px;
-        }
+    .cena {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 10px;
+        background-color: rgb(22, 22, 22);
+        font-family: "Montserrat", sans-serif;
+    }
 
-        .btn-outline-success {
-            margin-top: 20px;
-        }
+    .cena form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        .comment-area {
-            height: 400px;
-            /* Defina a altura desejada para a área de comentários */
-            overflow: auto;
-            /* Adiciona uma barra de rolagem quando necessário */
-            border: 1px solid #000000;
-            /* Adicione uma borda para melhorar a aparência */
-            padding: 10px;
-            /* Adicione um espaçamento interno */
-            background-color: rgb(22, 22, 22);
-            border-radius: 5px;
-            width: 100%;
-        }
+    h5 {
+        font-size: 7px;
+        margin-bottom: 10px;
+    }
 
-        *::-webkit-scrollbar {
-            width: 10px;
-            /* Largura da barra de rolagem */
-        }
+    h6 {
+        font-size: 10px;
+    }
 
-        *::-webkit-scrollbar-track {
-            background-color: #222;
-            /* Cor de fundo da área de rastreamento */
-        }
+    p {
+        margin-bottom: 2px;
+    }
 
-        *::-webkit-scrollbar-thumb {
-            background-color: #555;
-            /* Cor do polegar da barra de rolagem */
-        }
+    .btn-outline-success {
+        margin-top: 20px;
+    }
 
-        *::-webkit-scrollbar-thumb:hover {
-            background-color: #888;
-            /* Cor do polegar da barra de rolagem ao passar o mouse */
-        }
+    .comment-area {
+        height: 400px;
+        /* Defina a altura desejada para a área de comentários */
+        overflow: auto;
+        /* Adiciona uma barra de rolagem quando necessário */
+        border: 1px solid #000000;
+        /* Adicione uma borda para melhorar a aparência */
+        padding: 10px;
+        /* Adicione um espaçamento interno */
+        background-color: rgb(22, 22, 22);
+        border-radius: 5px;
+        width: 100%;
+    }
 
-        .comment-area::-webkit-scrollbar {
-            width: 10px;
-            /* Largura da barra de rolagem */
-        }
+    *::-webkit-scrollbar {
+        width: 10px;
+        /* Largura da barra de rolagem */
+    }
 
-        .comment-area::-webkit-scrollbar-track {
-            background-color: #222;
-            /* Cor de fundo da área de rastreamento */
-        }
+    *::-webkit-scrollbar-track {
+        background-color: #222;
+        /* Cor de fundo da área de rastreamento */
+    }
 
-        .comment-area::-webkit-scrollbar-thumb {
-            background-color: #555;
-            /* Cor do polegar da barra de rolagem */
-        }
+    *::-webkit-scrollbar-thumb {
+        background-color: #555;
+        /* Cor do polegar da barra de rolagem */
+    }
 
-        .comment-area::-webkit-scrollbar-thumb:hover {
-            background-color: #888;
-            /* Cor do polegar da barra de rolagem ao passar o mouse */
-        }
+    *::-webkit-scrollbar-thumb:hover {
+        background-color: #888;
+        /* Cor do polegar da barra de rolagem ao passar o mouse */
+    }
 
-        p {
-            color: white;
-        }
+    .comment-area::-webkit-scrollbar {
+        width: 10px;
+        /* Largura da barra de rolagem */
+    }
 
-        input {
-            background-color: #131313;
-            color: white;
-            border-radius: 10px;
-        }
+    .comment-area::-webkit-scrollbar-track {
+        background-color: #222;
+        /* Cor de fundo da área de rastreamento */
+    }
 
-        .txt {
-            border-radius: 0px;
-            height: 70px;
-        }
+    .comment-area::-webkit-scrollbar-thumb {
+        background-color: #555;
+        /* Cor do polegar da barra de rolagem */
+    }
 
-        .center {
-            margin-top: 10px;
-            padding: 5px;
-            width: 300px;
-            height: 700px;
-            background-color: rgb(22, 22, 22);
-            border-radius: 10px;
-            border: 3px solid rgb(10, 10, 10);
-            display: flex;
-            overflow-x: hidden;
-            justify-content: center;
-        }
+    .comment-area::-webkit-scrollbar-thumb:hover {
+        background-color: #888;
+        /* Cor do polegar da barra de rolagem ao passar o mouse */
+    }
 
-        .subperfil {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-        }
-        .hidden {
-            display: flex;
-            left: -400px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
+    p {
+        color: white;
+    }
 
-        .visible {
-            display: flex;
-            left: 0px; 
-            opacity: 1;
-            transition: all 0.3s ease;
-        }
-        .hiddenR{
-            display: flex;
-            right: -400px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-        .visibleR {
-            display: flex;
-            right: 0px; 
-            opacity: 1;
-            transition: all 0.3s ease;
-        }
-        .cenas {
-            width: 100%;
-            height: auto;
-            overflow: auto;
-            padding: 30px;
-            background-color: rgb(10, 10, 10);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .botoess{
-            display: flex; 
-        }
+    input {
+        background-color: #131313;
+        color: white;
+        border-radius: 10px;
+    }
 
-        #perfilCene {
-            margin-top: 40px;
-        }
+    .txt {
+        border-radius: 10px;
+        background-color:rgb(73, 73, 73);
+        color: black; 
+        height: 70px;
+        font-weight: bold;
+    }
 
-        #delCene {
-            position: absolute;
-            bottom: 15px;
-            left: 165px;
-            z-index: 5;
-        }
-        main{
-            margin: 20px; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center;
-            height: 100%;
-        }
+    .center {
+        margin-top: 10px;
+        padding: 5px;
+        width: 300px;
+        height: 700px;
+        background-color: rgb(22, 22, 22);
+        border-radius: 10px;
+        border: 3px solid rgb(10, 10, 10);
+        display: flex;
+        overflow-x: hidden;
+        justify-content: center;
+    }
 
-        #imgDaCena {
-            border-radius: 10px;
-            border: 1px solid white;
-        }
+    .subperfil {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        #textoCena {
-            font-family: Helvetica; 
-            border: 1px solid white;
-            background-color: #222;
-            border-radius: 10px;
-            width: 260px; 
-            padding: 10px;
-        }
-        #showLeftButton{
-            
-            bottom: 0;
-        }
-        #showRightButton {
-            
-            bottom: 20px; 
-        }
-        
-        .upperfil {
-            display: flex;
-            justify-content: center;
-        }
-        .botoes{
-            position: fixed;
-            width: 200px; 
-            height: 50px; 
-            bottom: 0; 
-        }
-        main{
-            position: absolute;
-            max-width: 320px; 
-            overflow: hidden;
-        }
-    </style>
+    .hidden {
+        display: flex;
+        left: -400px;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .visible {
+        display: flex;
+        left: 0px;
+        opacity: 1;
+        transition: all 0.3s ease;
+    }
+
+    .hiddenR {
+        display: flex;
+        right: -400px;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .visibleR {
+        display: flex;
+        right: 0px;
+        opacity: 1;
+        transition: all 0.3s ease;
+    }
+
+    .cenas {
+        width: 100%;
+        height: auto;
+        overflow: auto;
+        padding: 30px;
+        background-color: rgb(10, 10, 10);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .botoess {
+        display: flex;
+    }
+
+    #perfilCene {
+        margin-top: 40px;
+    }
+
+    #delCene {
+        position: absolute;
+        bottom: 15px;
+        left: 165px;
+        z-index: 5;
+    }
+
+    main {
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+    }
+
+    #imgDaCena {
+        border-radius: 10px;
+        border: 1px solid white;
+    }
+
+    #textoCena {
+        font-family: Helvetica;
+        border: 1px solid white;
+        background-color: #222;
+        border-radius: 10px;
+        width: 260px;
+        padding: 10px;
+    }
+
+    #showLeftButton {
+
+        bottom: 0;
+    }
+
+    #showRightButton {
+
+        bottom: 20px;
+    }
+
+    .upperfil {
+        display: flex;
+        justify-content: center;
+    }
+
+    .botoes {
+        position: fixed;
+        width: 100px;
+        height: 50px;
+        bottom: 0;
+    }
+
+    main {
+        position: absolute;
+        max-width: 320px;
+        overflow: hidden;
+    }
+</style>
 <main>
+
     <body>
-        
-            <img id="title" width="250" src="../cooltext436912139547057.png">
-  
-        
+
+        <img id="title" width="250" src="../cooltext436912139547057.png">
+
+
         <div class="hidden" id="left">
             <div class="Perfil">
                 <a id="icon" href="/configUser/<%=conta.id%>"><img class="icon" src="<%=conta.perfil%>" width="150"
                         height="150"></a>
-                <h6>Sua conta:<img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png" width="12px"><%=conta.yen%></h6>
+                <h6>Sua conta:<img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png"
+                        width="12px">
+                    <%=conta.yen%>
+                </h6>
                 <h3 class="profile-username">
                     <%=conta.username%>
                 </h3>
@@ -411,7 +487,7 @@
                     <input type="hidden" name="password" value="<%=conta.password%>">
                     <input type="hidden" name="perfil" value="<%=conta.perfil%>">
                     <button type="submit" class="btn-clear btn btn-outline-warning" id="btnUpdateComment">Atualizar
-                        Chat</button>
+                        Pagina</button>
             </div>
             </form>
             <div class="cena">
@@ -457,8 +533,9 @@
             </div>
         </div>
         <div class="botoes">
-        <button id="showLeftButton" class="btn btn-outline-warning"><<</button>
-        <button id="showRightButton" class="btn btn-outline-warning">>></button>
+            <button id="showLeftButton" class="btn btn-warning">
+                <<</button>
+                    <button id="showRightButton" class="btn btn-warning">>></button>
         </div>
 
         <div class="hiddenR" id="right">
@@ -478,12 +555,13 @@
                     </div>
                     <% }); %>
             </div>
-            <form id="coment" action="/comment" method="post">
+            <form id="coment" action="/api/comentarios" method="post">
                 <input type="hidden" id="username" name="username" value="<%=conta.username%>">
                 <input type="hidden" id="perfil" name="perfil" value="<%=conta.perfil%>">
-                <textarea id="coment" name="coment" placeholder="Enviar comentario..."></textarea>
+                <textarea id="coment-input" name="coment" placeholder="Enviar comentário..."></textarea>
                 <div class="botoess">
                     <button type="submit" class="btn btn-outline-primary">Enviar</button>
+                </div>
             </form>
             <form action="/clear-comment" method="POST">
                 <input type="hidden" name="username" value="<%=conta.username%>">
@@ -494,4 +572,5 @@
         </div>
     </body>
 </main>
-</html> 
+
+</html>
