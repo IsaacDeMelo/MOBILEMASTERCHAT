@@ -83,6 +83,7 @@ app.post('/criar-cena', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.redirect('/');
+    console.log(username)
   }
 });
 
