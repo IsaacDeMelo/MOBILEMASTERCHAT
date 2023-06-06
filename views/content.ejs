@@ -11,9 +11,11 @@
 </head>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-
         $(document).ready(function () {
-            
+            let comentariosScroll = document.getElementById('comentarios-scroll');
+
+                // Mantém o scroll sempre para baixo
+                comentariosScroll.scrollTop = comentariosScroll.scrollHeight;
             function atualizarConteudo() {
                 $.ajax({
                     url: '/api/comentarios',
@@ -43,9 +45,7 @@
                         console.error('Erro ao carregar os comentários:', error);
                     }
                 });
-                
             }
-            
             $('#coment').submit(function (event) {
                 event.preventDefault(); // Evita o envio do formulário tradicional
 
@@ -69,7 +69,6 @@
                 });
             });
             setInterval(atualizarConteudo, 500);
-
         });
         // Obtém o elemento de scroll
         const showLeftButton = document.getElementById('showLeftButton');
@@ -513,7 +512,7 @@
         </div>
         <div class="center">
             <div class="cenas">
-                <% for (var i = cena.length - 1; i >= 0 < ; i--){ %>
+                <% for (var i = cena.length - 1; i >= 0; i--){ %>
                     <div class="upperfil">
                         <div class="subperfil">
                             <img src="<%=cena[i].perfil%>" id="perfilCene" class="icon" width="50" height="50">
