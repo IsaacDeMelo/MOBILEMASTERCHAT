@@ -11,11 +11,12 @@
 </head>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        $(document).ready(function () {
-            let comentariosScroll = document.getElementById('comentarios-scroll');
+        let comentariosScroll = document.getElementById('comentarios-scroll');
 
                 // Mantém o scroll sempre para baixo
                 comentariosScroll.scrollTop = comentariosScroll.scrollHeight;
+        $(document).ready(function () {
+            
             function atualizarConteudo() {
                 $.ajax({
                     url: '/api/comentarios',
