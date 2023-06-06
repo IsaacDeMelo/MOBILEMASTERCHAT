@@ -13,6 +13,55 @@
     document.addEventListener('DOMContentLoaded', function () {
         $(document).ready(function () {
             let comentariosScroll = document.getElementById('comentarios-scroll');
+            function atualizarCenas() {
+                $.ajax({
+                    url: '/api/criar-cena', // substitua pela URL correta da sua rota de API
+                    method: 'GET',
+                    success: function (data) {
+                        // Limpa o conteúdo anterior das cenas
+                        $('.cenas').empty();
+
+                        // Itera sobre os dados recebidos e adiciona cada cena à div
+                        data.forEach(function (cena) {
+                            var divCena = $('<div>');
+                            var divPerfil = $('<div>', {
+                                class: 'upperfil'
+                            });
+                            var divSubPerfil = $('<div>', {
+                                class: 'subperfil'
+                            });
+                            var imgPerfil = $('<img>', {
+                                src: cena.perfil,
+                                id: 'perfilCene',
+                                class: 'icon',
+                                width: '50',
+                                height: '50'
+                            });
+                            var pUsername = $('<p>', {
+                                id: 'userCene',
+                                text: cena.username
+                            });
+                            var imgCena = $('<img>', {
+                                src: cena.img,
+                                id: 'imgDaCena',
+                                width: '250'
+                            });
+                            var pTexto = $('<p>', {
+                                id: 'textoCena',
+                                text: cena.texto
+                            });
+
+                            divSubPerfil.append(imgPerfil, pUsername);
+                            divPerfil.append(divSubPerfil);
+                            divCena.append();
+                            $('.cenas').prepend(divPerfil, imgCena,pTexto);
+                        });
+                    },
+                    error: function (error) {
+                        console.error('Erro ao carregar as cenas:', error);
+                    }
+                });
+            }
             function atualizarConteudo() {
                 $.ajax({
                     url: '/api/comentarios',
@@ -44,6 +93,25 @@
                     }
                 });
             }
+
+            $('#crea').submit(function (event) {
+                event.preventDefault();
+
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: '/api/criar-cena',
+                    method: 'POST',
+                    data: formData,
+                    success: function (data) {
+                        $('textarea').val('');
+
+                    },
+                    error: function (error) {
+                        console.error('Erro ao enviar o comentário:', error);
+                    }
+                })
+            })
             $('#coment').submit(function (event) {
                 event.preventDefault(); // Evita o envio do formulário tradicional
 
@@ -67,6 +135,7 @@
                 });
             });
             setInterval(atualizarConteudo, 500);
+            setInterval(atualizarCenas, 500);
         });
         // Obtém o elemento de scroll
         const showLeftButton = document.getElementById('showLeftButton');
@@ -87,7 +156,7 @@
 <style>
     body {
         position: relative;
-        margin: 0; 
+        margin: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -201,12 +270,15 @@
         flex-direction: row;
         align-items: center;
     }
-    #coment button{
-        border-radius: 360px; 
+
+    #coment button {
+        border-radius: 360px;
     }
-    #coment textarea{
-        height: 30px; 
+
+    #coment textarea {
+        height: 30px;
     }
+
     #enviarcoment {
         margin: 10px;
         height: 40px;
@@ -238,7 +310,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        border: 3px solid rgb(85, 85, 85); 
+        border: 3px solid rgb(85, 85, 85);
         border-radius: 10px;
         padding: 10px;
         background-color: rgb(22, 22, 22);
@@ -334,8 +406,8 @@
 
     .txt {
         border-radius: 10px;
-        background-color:rgb(73, 73, 73);
-        color: black; 
+        background-color: rgb(73, 73, 73);
+        color: black;
         height: 70px;
         font-weight: bold;
     }
@@ -395,8 +467,8 @@
         overflow-x: hidden;
         padding: 30px;
         background-color: rgb(10, 10, 10);
-        border: 3px solid rgb(85, 85, 85); 
-        border-radius: 10px; 
+        border: 3px solid rgb(85, 85, 85);
+        border-radius: 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -419,7 +491,7 @@
     main {
         margin: 20px;
         display: flex;
-        overflow: hidden; 
+        overflow: hidden;
         flex-direction: column;
         align-items: center;
         height: 100%;
@@ -443,7 +515,7 @@
     }
 
     #showLeftButton {
-        border-radius: 360px; 
+        border-radius: 360px;
         position: absolute;
         left: -22px;
         bottom: 60%;
@@ -451,7 +523,7 @@
     }
 
     #showRightButton {
-        border-radius: 360px; 
+        border-radius: 360px;
         position: absolute;
         right: -22px;
         bottom: 60%;
@@ -463,7 +535,7 @@
         justify-content: center;
     }
 
-    .multiarea{
+    .multiarea {
         border: 1px solid black;
         border-radius: 10px;
         background-color: rgb(22, 22, 22);
@@ -503,14 +575,14 @@
             </div>
             </form>
             <div class="multiarea">
-               
+
             </div>
             <a href="/login"><button class="btn btn-danger" id="logout">LogOut</button></a>
         </div>
         </div>
         <div class="center">
             <div class="cenas">
-                <% for (var i = cena.length - 1; i >= 0; i--){ %>
+                <%for (var i = cena.length - 1; i >= 0; i--){ %>
                     <div class="upperfil">
                         <div class="subperfil">
                             <img src="<%=cena[i].perfil%>" id="perfilCene" class="icon" width="50" height="50">
@@ -527,7 +599,7 @@
             </div>
             <div class="cena">
                 <h4>Battlefield</h4>
-                <form id="crea" action="/criar-cena" method="POST">
+                <form id="crea" action="/api/criar-cena" method="POST">
                     <input type="hidden" name="username" placeholder="Username" autocomplete="off"
                         value="<%=conta.username%>">
                     <input type="hidden" name="perfil" placeholder="Perfil (URL)" autocomplete="off"
@@ -537,54 +609,55 @@
                     <textarea class="txt" name="texto"
                         placeholder="Texto, adicione seus atributos ao final ou durante a cena." autocomplete="off"
                         required></textarea>
-                    <button type="submit"class="btn btn-outline-warning">Criar Cena</button>
-                    </form>
-        </div>
-        <form action="/deleteCena" method="post">
-            <input type="hidden" name="username" value="<%=conta.username%>">
-            <input type="hidden" name="password" value="<%=conta.password%>">
-            <button class="btn btn-danger" type="submit" id="delCene">Deletar Cena</button>
-        </form>
-        </div>
-    </div>
-        <div>
-        <div class="hiddenR" id="right">
-            <p class="h4">Chat - Comentários</p>
-            <div id='comentarios-scroll' class="comment-area">
-                <!-- Aqui é onde os comentários serão exibidos -->
-                <% comentario.forEach(function(comentario) { %>
-                    <div>
-                        <img class="icon" src="<%= comentario.perfil %>" width="50" height="50"><strong>
-                            <%=comentario.username%>
-                        </strong>:<p>
-                            <%= comentario.coment %>
-                        </p>
-                        <h5>
-                            <%= comentario.createdAt%>
-                        </h5>
-                    </div>
-                    <% }); %>
+                    <button type="submit" class="btn btn-outline-warning">Criar Cena</button>
+                </form>
             </div>
-            <form id="coment" action="/api/comentarios" method="post">
-                <input type="hidden" id="username" name="username" value="<%=conta.username%>">
-                <input type="hidden" id="perfil" name="perfil" value="<%=conta.perfil%>">
-                <textarea id="coment-input" name="coment" placeholder="Enviar comentário..."></textarea>
-                <div class="botoess">
-                    <button type="submit" class="btn btn-success">></button>
-                </div>
-            </form>
-            <form action="/clear-comment" method="POST">
+            <form action="/deleteCena" method="post">
                 <input type="hidden" name="username" value="<%=conta.username%>">
                 <input type="hidden" name="password" value="<%=conta.password%>">
-                <button type="submit" class="btn-clear btn btn-danger">Deletar</button>
+                <button class="btn btn-danger" type="submit" id="delCene">Deletar Cena</button>
+            </form>
         </div>
-        </form>
         </div>
-        
-            <button id="showLeftButton" class="btn btn-outline-warning">
-                >></button>
-                    <button id="showRightButton" class="btn btn-outline-warning"><<</button>
-       
+        <div>
+            <div class="hiddenR" id="right">
+                <p class="h4">Chat - Comentários</p>
+                <div id='comentarios-scroll' class="comment-area">
+                    <!-- Aqui é onde os comentários serão exibidos -->
+                    <% comentario.forEach(function(comentario) { %>
+                        <div>
+                            <img class="icon" src="<%= comentario.perfil %>" width="50" height="50"><strong>
+                                <%=comentario.username%>
+                            </strong>:<p>
+                                <%= comentario.coment %>
+                            </p>
+                            <h5>
+                                <%= comentario.createdAt%>
+                            </h5>
+                        </div>
+                        <% }); %>
+                </div>
+                <form id="coment" action="/api/comentarios" method="post">
+                    <input type="hidden" id="username" name="username" value="<%=conta.username%>">
+                    <input type="hidden" id="perfil" name="perfil" value="<%=conta.perfil%>">
+                    <textarea id="coment-input" name="coment" placeholder="Enviar comentário..."></textarea>
+                    <div class="botoess">
+                        <button type="submit" class="btn btn-success">></button>
+                    </div>
+                </form>
+                <form action="/clear-comment" method="POST">
+                    <input type="hidden" name="username" value="<%=conta.username%>">
+                    <input type="hidden" name="password" value="<%=conta.password%>">
+                    <button type="submit" class="btn-clear btn btn-danger">Deletar</button>
+            </div>
+            </form>
+        </div>
+
+        <button id="showLeftButton" class="btn btn-outline-warning">
+            >></button>
+        <button id="showRightButton" class="btn btn-outline-warning">
+            <<</button>
+
     </body>
 </main>
 

@@ -86,7 +86,16 @@ app.post('/criar-cena', async (req, res) => {
     console.log(username)
   }
 });
-
+app.get('/api/criar-cena', async (req, res) => {
+  try {
+    const cena = await Cena.findAll();
+    // Renderize os comentários em um formato adequado (por exemplo, JSON ou HTML) e envie a resposta
+    res.json(cena);
+  } catch (error) {
+    console.error('Erro ao buscar as cenas:', error);
+    res.status(500).send('Erro ao buscar as cenas');
+  }
+})
 app.get('/configUser/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -127,7 +136,23 @@ app.post('/updateUser/:id', async (req, res) => {
     res.send('Ocorreu um erro ao atualizar as informações do usuário.');
   }
 });
-
+app.post('/api/criar-cena', async (req, res) => {
+  const { username, perfil, img, texto, fala } = req.body;
+  try {
+    const conta = await Conta.findOne({ where: { username, perfil }})
+    const comentario = await Comentario.findAll();
+    const cenaCriada = await Cena.create({ username, perfil, img, texto, fala });
+    const cena = await Cena.findAll();
+    if (conta) {
+      res.render('content', { conta: conta, comentario: comentario, cena: cena});
+    } else {
+      res.send('Invalid username or password');
+    }
+  } catch (error){
+    console.error(error);
+    res.redirect('/');
+  }
+});
 app.post('/login/content', async (req, res) => {
   const { username, password } = req.body;
   try {
