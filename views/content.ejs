@@ -192,7 +192,7 @@
     }
 
     #title {
-        position: fixed;
+        
         margin: 0;
         z-index: 5;
     }
@@ -415,7 +415,7 @@
     .center {
         margin-top: 5px;
         padding: 5px;
-        width: 300px;
+        width: 320px;
         height: 700px;
         background-color: rgb(22, 22, 22);
         border-radius: 10px;
@@ -465,7 +465,10 @@
         width: 100%;
         height: 400px;
         overflow-x: hidden;
-        padding: 30px;
+        padding-left: 20px;
+        padding-right: 20px; 
+        padding-top: 5px;
+        padding-bottom: 30px; 
         background-color: rgb(10, 10, 10);
         border: 3px solid rgb(85, 85, 85);
         border-radius: 10px;
@@ -489,14 +492,14 @@
     }
 
     main {
-        margin: 20px;
+        margin: 5px;
         display: flex;
         overflow: hidden;
         flex-direction: column;
         align-items: center;
         height: 100%;
         position: absolute;
-        max-width: 320px;
+        width: 320px;
         overflow: hidden;
     }
 
@@ -517,7 +520,7 @@
     #showLeftButton {
         border-radius: 360px;
         position: absolute;
-        left: -22px;
+        left: -20px;
         bottom: 60%;
         z-index: 10;
     }
@@ -525,7 +528,7 @@
     #showRightButton {
         border-radius: 360px;
         position: absolute;
-        right: -22px;
+        right: -20px;
         bottom: 60%;
         z-index: 7;
     }
@@ -551,10 +554,6 @@
 <main>
 
     <body>
-
-        <img id="title" width="250" src="../cooltext436912139547057.png">
-
-
         <div class="hidden" id="left">
             <div class="Perfil">
                 <a id="icon" href="/configUser/<%=conta.id%>"><img class="icon" src="<%=conta.perfil%>" width="150"
@@ -584,6 +583,7 @@
         </div>
         </div>
         <div class="center">
+            <img id="title" width="250" src="../cooltext436912139547057.png">
             <div class="cenas">
                 <%for (var i = cena.length - 1; i >= 0; i--){ %>
                     <div class="upperfil">
@@ -594,7 +594,7 @@
                             </p>
                         </div>
                     </div>
-                    <img id="imgDaCena" src="<%=cena[i].img%>%>" width="250">
+                    <img id="imgDaCena" src="<%=cena[i].img%>%>" width="260">
                     <p id="textoCena">
                         <%=cena[i].texto%>
                     </p>

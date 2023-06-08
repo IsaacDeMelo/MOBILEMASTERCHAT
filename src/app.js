@@ -57,7 +57,7 @@ app.post('/api/comentarios', async (req, res) => {
 });
 app.post('/comprar/item', async (req, res) =>{
   var { username, foto } = req.body;
-    const produto = await Produto.findOne({ where: {foto: foto}});
+    const produto = await Produto.findOne({ where: {foto}});
   try {
     const conta = await Conta.findOne({ where: {username: username}}); 
     conta.yen = conta.yen - produto.preço;
@@ -65,7 +65,6 @@ app.post('/comprar/item', async (req, res) =>{
     res.render('comprovante', { conta: conta, produto: produto });
   } catch (error){
     console.log(error);
-    res.send(produto);
   }
     
   
