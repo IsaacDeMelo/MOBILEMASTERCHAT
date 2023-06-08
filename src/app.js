@@ -5,6 +5,7 @@ import User from './user.js';
 import Conta from './contas.js';
 import Cena from './cena.js'
 import Comentario from './comentarios.js'
+import Produto from './produtos.js';
 import Sequelize from 'sequelize';
 
 const {Op} = Sequelize;
@@ -16,11 +17,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 await database.sync();
 app.use((req, res, next) => {
-  if (req.body._method && req.body._method.toUpperCase() === 'PUT') {
+  if (req.body && req.body._method && req.body._method.toUpperCase() === 'PUT') {
     req.method = 'PUT';
   }
   next();
 });
+
 app.get('/api/comentarios', async (req, res) => {
   try {
     const comentarios = await Comentario.findAll();
@@ -31,6 +33,7 @@ app.get('/api/comentarios', async (req, res) => {
     res.status(500).send('Erro ao buscar os comentários');
   }
 });
+
 app.get('/', (req, res) => {
   res.render('index');
 });
@@ -52,7 +55,21 @@ app.post('/api/comentarios', async (req, res) => {
     res.redirect('/');
   }
 });
-
+app.post('/comprar/item', async (req, res) =>{
+  var { username, foto } = req.body;
+    const produto = await Produto.findOne({ where: {foto: foto}});
+  try {
+    const conta = await Conta.findOne({ where: {username: username}}); 
+    conta.yen = conta.yen - produto.preço;
+    conta.save();
+    res.render('comprovante', { conta: conta, produto: produto });
+  } catch (error){
+    console.log(error);
+    res.send(produto);
+  }
+    
+  
+});
 app.post('/register', async (req, res) => {
   const { username, password, perfil } = req.body;
   try {
@@ -213,7 +230,23 @@ app.post('/comment', async (req, res) => {
     res.redirect('/');
   }
 });
-
+app.get('/api/produtos', async (req, res) => {
+  try {
+    const produtos = await Produto.findAll();
+    res.json({ produtos });
+  } catch (error) {
+    console.error('Erro ao buscar os produtos:', error);
+    res.status(500).send('Erro ao buscar os produtos');
+  }
+});
+app.post('/loja',  async (req, res) => {
+    const { id } = req.body;
+    const conta = await Conta.findByPk(id);
+    const comentario = await Comentario.findAll();
+    const produto = await Produto.findAll();
+    res.render('loja', { conta: conta, comentario: comentario, produto: produto });
+    console.log(produto);
+})
 app.post('/deleteCena', async (req, res) =>{
   try {
     const { username, password } = req.body
@@ -270,9 +303,7 @@ app.get('/delete/:id', async (req, res) => {
 
 
 
-
-
-
+// Outros middlewares e configurações...
 
 
 // Listar todos os usuários

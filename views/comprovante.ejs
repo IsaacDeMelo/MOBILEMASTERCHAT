@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMPROVANTE DE COMPRA</title>
+</head>
+<body>
+    <div class="contain">
+    <code>O jogador <%=conta.username%> comprou o item <%=produto.nome%> por <%=produto.preço%> yen </code>
+    <h1 id="h1"></h1>
+    <code>Feche o site e abra novamente pelo link para voltar de forma correta e não diminuir seu saldo mais do que deveria.</code>
+    <code>Tire um print e envie para o adm da plataforma para ter sua compra aprovada.</code>
+</div>
+</body>
+<script>
+    function getIdCompra(minimo, maximo){
+      min = Math.ceil(minimo);
+      max = Math.floor(maximo);
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+    const idDaCompra = ("ID DA COMPRA: " + getIdCompra(10000000, 99999999));
+    document.getElementById("h1").innerHTML = idDaCompra; 
+</script>
+</html>

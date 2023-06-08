@@ -13,55 +13,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         $(document).ready(function () {
             let comentariosScroll = document.getElementById('comentarios-scroll');
-            function atualizarCenas() {
-                $.ajax({
-                    url: '/api/criar-cena', // substitua pela URL correta da sua rota de API
-                    method: 'GET',
-                    success: function (data) {
-                        // Limpa o conteúdo anterior das cenas
-                        $('.cenas').empty();
 
-                        // Itera sobre os dados recebidos e adiciona cada cena à div
-                        data.forEach(function (cena) {
-                            var divCena = $('<div>');
-                            var divPerfil = $('<div>', {
-                                class: 'upperfil'
-                            });
-                            var divSubPerfil = $('<div>', {
-                                class: 'subperfil'
-                            });
-                            var imgPerfil = $('<img>', {
-                                src: cena.perfil,
-                                id: 'perfilCene',
-                                class: 'icon',
-                                width: '50',
-                                height: '50'
-                            });
-                            var pUsername = $('<p>', {
-                                id: 'userCene',
-                                text: cena.username
-                            });
-                            var imgCena = $('<img>', {
-                                src: cena.img,
-                                id: 'imgDaCena',
-                                width: '250'
-                            });
-                            var pTexto = $('<p>', {
-                                id: 'textoCena',
-                                text: cena.texto
-                            });
-
-                            divSubPerfil.append(imgPerfil, pUsername);
-                            divPerfil.append(divSubPerfil);
-                            divCena.append();
-                            $('.cenas').prepend(divPerfil, imgCena,pTexto);
-                        });
-                    },
-                    error: function (error) {
-                        console.error('Erro ao carregar as cenas:', error);
-                    }
-                });
-            }
             function atualizarConteudo() {
                 $.ajax({
                     url: '/api/comentarios',
@@ -93,64 +45,100 @@
                     }
                 });
             }
-
-            $('#crea').submit(function (event) {
-                event.preventDefault();
-
-                var formData = $(this).serialize();
-
-                $.ajax({
-                    url: '/api/criar-cena',
-                    method: 'POST',
-                    data: formData,
-                    success: function (data) {
-                        $('textarea').val('');
-
-                    },
-                    error: function (error) {
-                        console.error('Erro ao enviar o comentário:', error);
+            function obterProdutos() {
+                const xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        const resposta = JSON.parse(xhr.responseText);
+                        const produtos = resposta.produtos;
+                        exibirProdutos(produtos); // Chama a função para exibir os produtos no HTML
                     }
-                })
-            })
-            $('#coment').submit(function (event) {
-                event.preventDefault(); // Evita o envio do formulário tradicional
+                };
+                xhr.open('GET', '/api/produtos', true);
+                xhr.send();
+            }
 
-                var formData = $(this).serialize(); // Serializa os dados do formulário
+            function exibirProdutos(produtos) {
+                const itensContainer = document.querySelector('.itens');
 
-                $.ajax({
-                    url: '/api/comentarios',
-                    method: 'POST',
-                    data: formData,
-                    success: function (data) {
-                        $('#coment-input').val(''); // Limpa o campo de comentário após o envio
-                        atualizarConteudo(); // Atualiza os comentários exibidos na página
-                        let comentariosScroll = document.getElementById('comentarios-scroll');
+                // Limpa o conteúdo atual do container
+                itensContainer.innerHTML = '';
 
-                        // Mantém o scroll sempre para baixo
-                        comentariosScroll.scrollTop = comentariosScroll.scrollHeight;
-                    },
-                    error: function (error) {
-                        console.error('Erro ao enviar o comentário:', error);
-                    }
+                // Itera sobre os produtos e cria o HTML para cada produto
+                produtos.forEach(produto => {
+                    if (produto.preço > <%= conta.yen %>){
+                    const itemHtml = `
+      
+        <img style="border-radius: 30px; margin-top: 10px;"src="${produto.foto}" width="250">
+        <h6 style="margin-bottom: 0; margin-top: 10px;">${produto.nome}</h6>
+        <div class="preço">
+          <img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png" width="12px">
+          <code style="color: red">${produto.preço}</code>
+      </div>
+      <a href="#"><h6 class="btn btn-outline-secondary">buy</h6></a>
+    `;
+                    itensContainer.innerHTML += itemHtml;
+                } else {
+                    const itemHtml = `
+      
+      <img style="border-radius: 30px; margin-top: 10px;"src="${produto.foto}" width="250">
+      <h6 style="margin-bottom: 0; margin-top: 10px;">${produto.nome}</h6>
+      <div class="preço">
+        <img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png" width="12px">
+        <code style="color: green">${produto.preço}</code>
+    </div>
+    <div>
+        <form action="/comprar/item" method="post">
+            <input type="hidden" name="username" value="<%=conta.username%>"></input>
+            <input type="hidden" name="foto" value="${produto.foto}"></input>
+            <a href="#"><button type="submit" style="background-color:rgb(10, 10, 10); border: none;"><h6 class="btn btn-success">buy</h6></button></a>
+        </form>  
+    </div>
+  `;
+                    itensContainer.innerHTML += itemHtml;
+                }
                 });
-            });
-            setInterval(atualizarConteudo, 500);
-            setInterval(atualizarCenas, 500);
-        });
-        // Obtém o elemento de scroll
-        const showLeftButton = document.getElementById('showLeftButton');
-        const showRightButton = document.getElementById('showRightButton');
-        const leftElement = document.getElementById('left');
-        const rightElement = document.getElementById('right');
 
-        showLeftButton.addEventListener('click', () => {
-            leftElement.classList.toggle('visible');
-        });
+    }
+            $('#coment').submit(function (event) {
+        event.preventDefault(); // Evita o envio do formulário tradicional
 
-        showRightButton.addEventListener('click', () => {
-            rightElement.classList.toggle('visibleR');
-        });
+        var formData = $(this).serialize(); // Serializa os dados do formulário
 
+        $.ajax({
+            url: '/api/comentarios',
+            method: 'POST',
+            data: formData,
+            success: function (data) {
+                $('#coment-input').val(''); // Limpa o campo de comentário após o envio
+                atualizarConteudo(); // Atualiza os comentários exibidos na página
+                let comentariosScroll = document.getElementById('comentarios-scroll');
+
+                // Mantém o scroll sempre para baixo
+                comentariosScroll.scrollTop = comentariosScroll.scrollHeight;
+            },
+            error: function (error) {
+                console.error('Erro ao enviar o comentário:', error);
+            }
+
+        });
+    });
+    setInterval(obterProdutos, 500);
+    setInterval(atualizarConteudo, 500);
+        });
+    // Obtém o elemento de scroll
+    const showLeftButton = document.getElementById('showLeftButton');
+    const showRightButton = document.getElementById('showRightButton');
+    const leftElement = document.getElementById('left');
+    const rightElement = document.getElementById('right');
+
+    showLeftButton.addEventListener('click', () => {
+        leftElement.classList.toggle('visible');
+    });
+
+    showRightButton.addEventListener('click', () => {
+        rightElement.classList.toggle('visibleR');
+    });
     });
 </script>
 <style>
@@ -329,7 +317,9 @@
     }
 
     h6 {
+        text-align: center;
         font-size: 10px;
+        width: 270px;
     }
 
     p {
@@ -488,6 +478,19 @@
         z-index: 5;
     }
 
+    .itens {
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        padding: 30px;
+        background-color: rgb(10, 10, 10);
+        border: 3px solid rgb(85, 85, 85);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     main {
         margin: 20px;
         display: flex;
@@ -552,8 +555,6 @@
 
     <body>
 
-        <img id="title" width="250" src="../cooltext436912139547057.png">
-
 
         <div class="hidden" id="left">
             <div class="Perfil">
@@ -570,56 +571,21 @@
                     <input type="hidden" name="username" value="<%=conta.username%>">
                     <input type="hidden" name="password" value="<%=conta.password%>">
                     <input type="hidden" name="perfil" value="<%=conta.perfil%>">
-                    <button type="submit" class="btn-clear btn btn-outline-warning" id="btnUpdateComment">Atualizar
-                        Pagina</button>
+                    <button type="submit" class="btn-clear btn btn-outline-warning" id="btnUpdateComment">Voltar ao
+                        Battlefield</button>
             </div>
             </form>
             <div class="multiarea">
-                <form action="/loja" method="post">
-                    <input type="hidden" name="id" value="<%=conta.id%>">
-                    <button type="submit" class="btn btn-outline-warning">Loja</button>
-                </form>
+
             </div>
             <a href="/login"><button class="btn btn-danger" id="logout">LogOut</button></a>
         </div>
         </div>
         <div class="center">
-            <div class="cenas">
-                <%for (var i = cena.length - 1; i >= 0; i--){ %>
-                    <div class="upperfil">
-                        <div class="subperfil">
-                            <img src="<%=cena[i].perfil%>" id="perfilCene" class="icon" width="50" height="50">
-                            <p id="userCene">
-                                <%=cena[i].username%>
-                            </p>
-                        </div>
-                    </div>
-                    <img id="imgDaCena" src="<%=cena[i].img%>%>" width="250">
-                    <p id="textoCena">
-                        <%=cena[i].texto%>
-                    </p>
-                    <% } %>
+            <h3>LOJA</h3>
+            <div class="itens">
+
             </div>
-            <div class="cena">
-                <h4>Battlefield</h4>
-                <form id="crea" action="/api/criar-cena" method="POST">
-                    <input type="hidden" name="username" placeholder="Username" autocomplete="off"
-                        value="<%=conta.username%>">
-                    <input type="hidden" name="perfil" placeholder="Perfil (URL)" autocomplete="off"
-                        value="<%=conta.perfil%>" required>
-                    <input type="text" name="img" placeholder="Imagem (URL)" autocomplete="off">
-                    <input type="hidden" name="fala" placeholder="Digite sua fala aqui" autocomplete="off">
-                    <textarea class="txt" name="texto"
-                        placeholder="Texto, adicione seus atributos ao final ou durante a cena." autocomplete="off"
-                        required></textarea>
-                    <button type="submit" class="btn btn-outline-warning">Criar Cena</button>
-                </form>
-            </div>
-            <form action="/deleteCena" method="post">
-                <input type="hidden" name="username" value="<%=conta.username%>">
-                <input type="hidden" name="password" value="<%=conta.password%>">
-                <button class="btn btn-danger" type="submit" id="delCene">Deletar Cena</button>
-            </form>
         </div>
         </div>
         <div>
