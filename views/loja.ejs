@@ -14,6 +14,7 @@
         $(document).ready(function () {
             let comentariosScroll = document.getElementById('comentarios-scroll');
 
+            
             function atualizarConteudo() {
                 $.ajax({
                     url: '/api/comentarios',
@@ -25,7 +26,8 @@
                         // Iterar sobre os dados recebidos e adicionar cada comentário à div
                         data.forEach(function (comentario) {
                             var divComentario = $('<div>');
-                            var imgPerfil = $('<img>', {
+                            if (comentario.perfil.length > 10){
+                              var imgPerfil = $('<img>', {
                                 class: 'icon',
                                 src: comentario.perfil,
                                 width: '50',
@@ -36,9 +38,24 @@
                             var h5CreatedAt = $('<h5>').text(comentario.createdAt);
 
                             divComentario.append(imgPerfil, strongUsername, ':', pComentario, h5CreatedAt);
-                            $('#comentarios-scroll').append(divComentario);
+                            $('#comentarios-scroll').append(divComentario);  
+                            } else {
+                                var imgPerfil = $('<img>', {
+                                class: 'icon',
+                                src: 'https://pbs.twimg.com/media/EpYXtEsWEBA3pLr.jpg',
+                                width: '50',
+                                height: '50'
+                            });
+                            var strongUsername = $('<strong>').text(comentario.username);
+                            var pComentario = $('<p>').text(comentario.coment);
+                            var h5CreatedAt = $('<h5>').text(comentario.createdAt);
+
+                            divComentario.append(imgPerfil, strongUsername, ':', pComentario, h5CreatedAt);
+                            $('#comentarios-scroll').append(divComentario);  
+                            }
+                            
                         });
-                        comentariosScroll.scrollTop = comentariosScroll.scrollHeight;
+                        
                     },
                     error: function (error) {
                         console.error('Erro ao carregar os comentários:', error);
