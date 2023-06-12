@@ -23,7 +23,9 @@
 
                         // Itera sobre os dados recebidos e adiciona cada cena à div
                         data.forEach(function (cena) {
-                            var divCena = $('<div>');
+
+                            if (cena.perfil.length > 10){
+                                var divCena = $('<div>');
                             var divPerfil = $('<div>', {
                                 class: 'upperfil'
                             });
@@ -40,6 +42,7 @@
                             var pUsername = $('<p>', {
                                 id: 'userCene',
                                 text: cena.username
+                            
                             });
                             var imgCena = $('<img>', {
                                 src: cena.img,
@@ -55,6 +58,42 @@
                             divPerfil.append(divSubPerfil);
                             divCena.append();
                             $('.cenas').prepend(divPerfil, imgCena,pTexto);
+                            } else {
+                                var divCena = $('<div>');
+                            var divPerfil = $('<div>', {
+                                class: 'upperfil'
+                            });
+                            var divSubPerfil = $('<div>', {
+                                class: 'subperfil'
+                            });
+                            var imgPerfil = $('<img>', {
+                                src: 'https://pbs.twimg.com/media/EpYXtEsWEBA3pLr.jpg',
+                                id: 'perfilCene',
+                                class: 'icon',
+                                width: '50',
+                                height: '50'
+                            });
+                            var pUsername = $('<p>', {
+                                id: 'userCene',
+                                text: cena.username
+                            
+                            });
+                            var imgCena = $('<img>', {
+                                src: cena.img,
+                                id: 'imgDaCena',
+                                width: '250'
+                            });
+                            var pTexto = $('<p>', {
+                                id: 'textoCena',
+                                text: cena.texto
+                            });
+
+                            divSubPerfil.append(imgPerfil, pUsername);
+                            divPerfil.append(divSubPerfil);
+                            divCena.append();
+                            $('.cenas').prepend(divPerfil, imgCena,pTexto);
+                            }
+                            
                         });
                     },
                     error: function (error) {
@@ -73,7 +112,8 @@
                         // Iterar sobre os dados recebidos e adicionar cada comentário à div
                         data.forEach(function (comentario) {
                             var divComentario = $('<div>');
-                            var imgPerfil = $('<img>', {
+                            if (comentario.perfil.length > 10){
+                              var imgPerfil = $('<img>', {
                                 class: 'icon',
                                 src: comentario.perfil,
                                 width: '50',
@@ -84,9 +124,24 @@
                             var h5CreatedAt = $('<h5>').text(comentario.createdAt);
 
                             divComentario.append(imgPerfil, strongUsername, ':', pComentario, h5CreatedAt);
-                            $('#comentarios-scroll').append(divComentario);
+                            $('#comentarios-scroll').append(divComentario);  
+                            } else {
+                                var imgPerfil = $('<img>', {
+                                class: 'icon',
+                                src: 'https://pbs.twimg.com/media/EpYXtEsWEBA3pLr.jpg',
+                                width: '50',
+                                height: '50'
+                            });
+                            var strongUsername = $('<strong>').text(comentario.username);
+                            var pComentario = $('<p>').text(comentario.coment);
+                            var h5CreatedAt = $('<h5>').text(comentario.createdAt);
+
+                            divComentario.append(imgPerfil, strongUsername, ':', pComentario, h5CreatedAt);
+                            $('#comentarios-scroll').append(divComentario);  
+                            }
+                            
                         });
-                        comentariosScroll.scrollTop = comentariosScroll.scrollHeight;
+                        
                     },
                     error: function (error) {
                         console.error('Erro ao carregar os comentários:', error);
@@ -136,6 +191,12 @@
             });
             setInterval(atualizarConteudo, 500);
             setInterval(atualizarCenas, 500);
+            setTimeout(() => {
+                let comentariosScroll = document.getElementById('comentarios-scroll');
+
+                        // Mantém o scroll sempre para baixo
+                comentariosScroll.scrollTop = comentariosScroll.scrollHeight;
+            }, 600);
         });
         // Obtém o elemento de scroll
         const showLeftButton = document.getElementById('showLeftButton');
@@ -475,6 +536,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        background-image: url(https://images2.alphacoders.com/100/thumbbig-1008472.webp);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        
     }
 
     .botoess {
@@ -505,7 +571,8 @@
 
     #imgDaCena {
         border-radius: 10px;
-        border: 1px solid black;
+        border-top: 3px solid rgb(255, 255, 255); 
+        border-bottom: 3px solid rgb(255, 255, 255);
     }
 
     #textoCena {
@@ -515,6 +582,8 @@
         border-radius: 10px;
         width: 260px;
         padding: 10px;
+        font-size: 13px; 
+        
     }
 
     #showLeftButton {
@@ -536,6 +605,10 @@
     .upperfil {
         display: flex;
         justify-content: center;
+    }
+
+    #userCene{
+        font-weight: bold;
     }
 
     .multiarea {
@@ -589,9 +662,9 @@
                     <div class="upperfil">
                         <div class="subperfil">
                             <img src="<%=cena[i].perfil%>" id="perfilCene" class="icon" width="50" height="50">
-                            <p id="userCene">
+                            <strong><p id="userCene" style="font-weight: 1000px;">
                                 <%=cena[i].username%>
-                            </p>
+                            </p></strong>
                         </div>
                     </div>
                     <img id="imgDaCena" src="<%=cena[i].img%>%>" width="260">

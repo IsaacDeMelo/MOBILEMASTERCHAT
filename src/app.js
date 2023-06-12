@@ -175,8 +175,9 @@ app.post('/login/content', async (req, res) => {
     const conta = await Conta.findOne({ where: { username, password } });
     const comentario =  await Comentario.findAll();
     const cena = await Cena.findAll();
+    const contas = await Conta.findAll();
     if (conta) {
-      res.render('content', { conta: conta, comentario: comentario, cena: cena})
+      res.render('content', { conta: conta, comentario: comentario, cena: cena, contas: contas })
     } else {
       res.send('Invalid username or password');
     }
