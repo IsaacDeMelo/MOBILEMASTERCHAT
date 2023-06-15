@@ -85,19 +85,20 @@
                 produtos.forEach(produto => {
                     if (produto.preço > <%= conta.yen %>){
                     const itemHtml = `
-      
+        <div class="produto">
         <img style="border-radius: 30px; margin-top: 10px;"src="${produto.foto}" width="250">
         <h6 style="margin-bottom: 0; margin-top: 10px;">${produto.nome}</h6>
         <div class="preço">
           <img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png" width="12px">
           <code style="color: red">${produto.preço}</code>
       </div>
-      <a href="#"><h6 class="btn btn-outline-secondary">buy</h6></a>
+      <a href="#"><h6 class="btn btn-outline-secondary" style="width: 100px">buy</h6></a>
+      </div>
     `;
                     itensContainer.innerHTML += itemHtml;
                 } else {
                     const itemHtml = `
-      
+      <div class="produto">
       <img style="border-radius: 30px; margin-top: 10px;"src="${produto.foto}" width="250">
       <h6 style="margin-bottom: 0; margin-top: 10px;">${produto.nome}</h6>
       <div class="preço">
@@ -108,8 +109,9 @@
         <form action="/comprar/item" method="post">
             <input type="hidden" name="username" value="<%=conta.username%>"></input>
             <input type="hidden" name="foto" value="${produto.foto}"></input>
-            <a href="#"><button type="submit" style="background-color:rgb(10, 10, 10); border: none;"><h6 class="btn btn-success">buy</h6></button></a>
+            <a href="#"><button type="submit" style="background-color:rgb(10, 10, 10); border: none;"><h6 class="btn btn-success" style="width: 100px">buy</h6></button></a>
         </form>  
+    </div>
     </div>
   `;
                     itensContainer.innerHTML += itemHtml;
@@ -335,7 +337,7 @@
 
     h6 {
         text-align: center;
-        font-size: 10px;
+        font-size: 10px; 
         width: 270px;
     }
 
@@ -422,7 +424,7 @@
     .center {
         margin-top: 5px;
         padding: 5px;
-        width: 300px;
+        width: 320px;
         height: 700px;
         background-color: rgb(22, 22, 22);
         border-radius: 10px;
@@ -506,6 +508,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        background-image: url("https://images4.alphacoders.com/107/1079550.png");
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
     }
 
     main {
@@ -566,6 +573,15 @@
         margin-top: 20px;
         width: 250px;
         height: 200px;
+    }
+    .produto{
+        display: flex; 
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid white; 
+        background-color: black; 
+        border-radius: 10px; 
+        margin-bottom: 10px; 
     }
 </style>
 <main>
