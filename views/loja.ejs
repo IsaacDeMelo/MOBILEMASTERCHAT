@@ -86,10 +86,10 @@
                     if (produto.preço > <%= conta.yen %>){
                     const itemHtml = `
         <div class="produto">
-        <img style="border-radius: 30px; margin-top: 10px;"src="${produto.foto}" width="250">
+        <img style="border-radius: 30px; margin-top: 10px; border: 2px solid rgb(34, 25, 0);"src="${produto.foto}" width="250">
         <h6 style="margin-bottom: 0; margin-top: 10px;">${produto.nome}</h6>
         <div class="preço">
-          <img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png" width="12px">
+          <img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png" width="20px">
           <code style="color: red">${produto.preço}</code>
       </div>
       <a href="#"><h6 class="btn btn-outline-secondary" style="width: 100px">buy</h6></a>
@@ -99,17 +99,17 @@
                 } else {
                     const itemHtml = `
       <div class="produto">
-      <img style="border-radius: 30px; margin-top: 10px;"src="${produto.foto}" width="250">
+      <img style="border-radius: 30px; margin-top: 10px; border: 2px solid rgb(34, 25, 0);" src="${produto.foto}" width="250">
       <h6 style="margin-bottom: 0; margin-top: 10px;">${produto.nome}</h6>
       <div class="preço">
-        <img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png" width="12px">
+        <img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png" width="20px">
         <code style="color: green">${produto.preço}</code>
     </div>
     <div>
         <form action="/comprar/item" method="post">
             <input type="hidden" name="username" value="<%=conta.username%>"></input>
             <input type="hidden" name="foto" value="${produto.foto}"></input>
-            <a href="#"><button type="submit" style="background-color:rgb(10, 10, 10); border: none;"><h6 class="btn btn-success" style="width: 100px">buy</h6></button></a>
+            <a href="#"><button type="submit" style="background:none; border: none;"><h6 class="btn btn-success" style="width: 100px">buy</h6></button></a>
         </form>  
     </div>
     </div>
@@ -508,7 +508,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-image: url("https://images4.alphacoders.com/107/1079550.png");
+        background-image: url("https://images4.alphacoders.com/102/1028306.png");
         background-attachment: fixed;
         background-size: cover;
         background-repeat: no-repeat;
@@ -578,10 +578,14 @@
         display: flex; 
         flex-direction: column;
         align-items: center;
-        border: 1px solid white; 
-        background-color: black; 
-        border-radius: 10px; 
+        border: 3px solid rgb(34, 25, 0);
+
         margin-bottom: 10px; 
+        background-image: url("https://images6.alphacoders.com/357/357528.jpg");
+    
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
     }
 </style>
 <main>
