@@ -19,9 +19,6 @@ const Cena = sequelize.define('Cena', {
     img: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: function (){
-        return "https://images2.alphacoders.com/100/1008472.png"
-      }
     },
     texto: {
       type: DataTypes.STRING,

@@ -41,6 +41,7 @@
                             });
                             var pUsername = $('<p>', {
                                 id: 'userCene',
+                                class: 'nomeCena',
                                 text: cena.username
                             
                             });
@@ -111,7 +112,7 @@
 
                         // Iterar sobre os dados recebidos e adicionar cada comentário à div
                         data.forEach(function (comentario) {
-                            var divComentario = $('<div>');
+                            var divComentario = $('<div class="msg">');
                             if (comentario.perfil.length > 10){
                               var imgPerfil = $('<img>', {
                                 class: 'icon',
@@ -119,11 +120,12 @@
                                 width: '50',
                                 height: '50'
                             });
-                            var strongUsername = $('<strong>').text(comentario.username);
+                            var strongUsername = $('<strong style="font-size: 10px; margin-left: 5px">').text(comentario.username);
                             var pComentario = $('<p>').text(comentario.coment);
                             var h5CreatedAt = $('<h5>').text(comentario.createdAt);
-
-                            divComentario.append(imgPerfil, strongUsername, ':', pComentario, h5CreatedAt);
+                            var divSpecial = $('<div>')
+                            divSpecial.append(imgPerfil, strongUsername)
+                            divComentario.append(divSpecial, pComentario, h5CreatedAt);
                             $('#comentarios-scroll').append(divComentario);  
                             } else {
                                 var imgPerfil = $('<img>', {
@@ -135,8 +137,9 @@
                             var strongUsername = $('<strong>').text(comentario.username);
                             var pComentario = $('<p>').text(comentario.coment);
                             var h5CreatedAt = $('<h5>').text(comentario.createdAt);
-
-                            divComentario.append(imgPerfil, strongUsername, ':', pComentario, h5CreatedAt);
+                            var divSpecial = $('<div style="display: flex; flex-direction: column;">')
+                            divSpecial.append(imgPerfil, strongUsername)
+                            divComentario.append(divSpecial, pComentario, h5CreatedAt);
                             $('#comentarios-scroll').append(divComentario);  
                             }
                             
@@ -189,8 +192,8 @@
                     }
                 });
             });
-            setInterval(atualizarConteudo, 500);
-            setInterval(atualizarCenas, 500);
+            setInterval(atualizarConteudo, 100);
+            setInterval(atualizarCenas, 100);
             setTimeout(() => {
                 let comentariosScroll = document.getElementById('comentarios-scroll');
 
@@ -366,15 +369,15 @@
     }
 
     .cena {
-        margin-top: 20px;
+        margin-top: 10px;
         margin-bottom: 5px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        border: 3px solid rgb(85, 85, 85);
+        
         border-radius: 10px;
         padding: 10px;
-        background-color: rgb(22, 22, 22);
+        background-color: rgb(10, 10, 10);
         font-family: "Montserrat", sans-serif;
     }
 
@@ -402,7 +405,7 @@
     }
 
     .comment-area {
-        height: 400px;
+        height: 450px;
         /* Defina a altura desejada para a área de comentários */
         overflow: auto;
         /* Adiciona uma barra de rolagem quando necessário */
@@ -458,7 +461,9 @@
     p {
         color: white;
     }
-
+    .nomeCena{
+        font-size: 10px;
+    }
     input {
         background-color: #131313;
         color: white;
@@ -531,8 +536,9 @@
         padding-top: 5px;
         padding-bottom: 30px; 
         background-color: rgb(10, 10, 10);
-        border: 3px solid rgb(85, 85, 85);
-        border-radius: 10px;
+        border-left: 5px solid rgb(0, 0, 0);
+        border-right: 5px solid rgb(0, 0, 0);
+        border-radius: 10px; 
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -558,7 +564,8 @@
     }
 
     main {
-        margin: 5px;
+        margin-left: 5px;
+        margin-right: 5px; 
         display: flex;
         overflow: hidden;
         flex-direction: column;
@@ -570,17 +577,24 @@
     }
 
     #imgDaCena {
-        border-radius: 10px;
-        border-top: 3px solid rgb(255, 255, 255); 
-        border-bottom: 3px solid rgb(255, 255, 255);
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        width: 250px;
+        border-top: 2px solid black;
+        border-left: 2px solid black;
+        border-right: 2px solid black;  
+        
     }
 
     #textoCena {
         font-family: Helvetica;
-        border: 1px solid black;
+        border-left: 2px solid black;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black; 
         background-color: #222;
-        border-radius: 10px;
-        width: 260px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        width: 250px;
         padding: 10px;
         font-size: 13px; 
         
@@ -623,6 +637,18 @@
         width: 250px;
         height: 200px;
     }
+    #send:hover{
+        background-color: #0c0c0c;
+    }
+    .msg{
+        border-radius: 10px; 
+        margin-bottom: 5px; 
+        padding: 5px; 
+        background-color:rgb(10, 10, 10);
+    }
+    .nomeCena{
+        font-size: 10px;         
+    }
 </style>
 <main>
 
@@ -656,13 +682,13 @@
         </div>
         </div>
         <div class="center">
-            <img id="title" width="250" src="../cooltext436912139547057.png">
+            <h3 style="font-family: 'Courier New', Courier, monospace">Battlefield</h3>
             <div class="cenas">
                 <%for (var i = cena.length - 1; i >= 0; i--){ %>
                     <div class="upperfil">
                         <div class="subperfil">
                             <img src="<%=cena[i].perfil%>" id="perfilCene" class="icon" width="50" height="50">
-                            <strong><p id="userCene" style="font-weight: 1000px;">
+                            <strong><p id="userCene" style="font-weight: 1000px; font-size: 10px">
                                 <%=cena[i].username%>
                             </p></strong>
                         </div>
@@ -674,18 +700,17 @@
                     <% } %>
             </div>
             <div class="cena">
-                <h4>Battlefield</h4>
                 <form id="crea" action="/api/criar-cena" method="POST">
                     <input type="hidden" name="username" placeholder="Username" autocomplete="off"
                         value="<%=conta.username%>">
                     <input type="hidden" name="perfil" placeholder="Perfil (URL)" autocomplete="off"
                         value="<%=conta.perfil%>" required>
-                    <input type="text" name="img" placeholder="Imagem (URL)" autocomplete="off">
+                    <input style="width: 258px;" type="text" name="img" placeholder="Imagem (URL)" autocomplete="off">
                     <input type="hidden" name="fala" placeholder="Digite sua fala aqui" autocomplete="off">
                     <textarea class="txt" name="texto"
                         placeholder="Texto, adicione seus atributos ao final ou durante a cena." autocomplete="off"
                         required></textarea>
-                    <button type="submit" class="btn btn-outline-warning">Criar Cena</button>
+                    <button type="submit" class="btn btn-outline-warning" style="margin-top: 10px">Criar Cena</button>
                 </form>
             </div>
             <form action="/deleteCena" method="post">
@@ -697,7 +722,7 @@
         </div>
         <div>
             <div class="hiddenR" id="right">
-                <p class="h4">Chat - Comentários</p>
+                <p class="h4" style="font-family: 'Courier New', Courier, monospace">Comentários</p>
                 <div id='comentarios-scroll' class="comment-area">
                     <!-- Aqui é onde os comentários serão exibidos -->
                     <% comentario.forEach(function(comentario) { %>
@@ -716,9 +741,9 @@
                 <form id="coment" action="/api/comentarios" method="post">
                     <input type="hidden" id="username" name="username" value="<%=conta.username%>">
                     <input type="hidden" id="perfil" name="perfil" value="<%=conta.perfil%>">
-                    <textarea id="coment-input" name="coment" placeholder="Enviar comentário..."></textarea>
+                    <textarea id="coment-input" name="coment" placeholder="Enviar comentário..." style="width: 200px"></textarea>
                     <div class="botoess">
-                        <button type="submit" class="btn btn-success">></button>
+                        <button type="submit" class="btn btn-success" style="background-color:rgb(59, 59, 59); border-color: rgb(0, 0, 0);">></button>
                     </div>
                 </form>
                 <form action="/clear-comment" method="POST">
