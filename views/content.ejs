@@ -137,7 +137,7 @@
                             var strongUsername = $('<strong style="font-size: 10px; margin-left: 5px">').text(comentario.username);
                             var pComentario = $('<p>').text(comentario.coment);
                             var h5CreatedAt = $('<h5>').text(comentario.createdAt);
-                            var divSpecial = $('<div style="display: flex; flex-direction: column;">')
+                            var divSpecial = $('<div>')
                             divSpecial.append(imgPerfil, strongUsername)
                             divComentario.append(divSpecial, pComentario, h5CreatedAt);
                             $('#comentarios-scroll').append(divComentario);  
