@@ -83,6 +83,43 @@
 
                 // Itera sobre os produtos e cria o HTML para cada produto
                 produtos.forEach(produto => {
+                    var nomeCompleto = produto.nome.split(" ")
+                    if (nomeCompleto.includes('EVENTO')){
+                        if (produto.preço > <%= conta.gems %>){
+                    const itemHtml = `
+        <div class="produto">
+        <img style="border-radius: 30px; margin-top: 10px; border: 2px solid rgb(34, 25, 0);"src="${produto.foto}" width="250">
+        <h6 style="margin-bottom: 0; margin-top: 10px;">${produto.nome}</h6>
+        <div class="preço">
+          <img src="https://cdn-icons-png.flaticon.com/512/785/785126.png" width="20px">
+          <code style="color: red">${produto.preço}</code>
+      </div>
+      <a href="#"><h6 class="btn btn-outline-secondary" style="width: 100px">buy</h6></a>
+      </div>
+    `;
+                    itensContainer.innerHTML += itemHtml;
+                
+                    } else {
+                        const itemHtml = `
+      <div class="produto">
+      <img style="border-radius: 30px; margin-top: 10px; border: 2px solid rgb(34, 25, 0);" src="${produto.foto}" width="250">
+      <h6 style="margin-bottom: 0; margin-top: 10px;">${produto.nome}</h6>
+      <div class="preço">
+        <img src="https://cdn-icons-png.flaticon.com/512/785/785126.png" width="20px">
+        <code style="color: green">${produto.preço}</code>
+    </div>
+    <div>
+        <form action="/comprar/item" method="post">
+            <input type="hidden" name="username" value="<%=conta.username%>"></input>
+            <input type="hidden" name="foto" value="${produto.foto}"></input>
+            <a href="#"><button type="submit" style="background:none; border: none;"><h6 class="btn btn-success" style="width: 100px">buy</h6></button></a>
+        </form>  
+    </div>
+    </div>
+  `;
+                    itensContainer.innerHTML += itemHtml;
+                    }
+                } else {
                     if (produto.preço > <%= conta.yen %>){
                     const itemHtml = `
         <div class="produto">
@@ -116,6 +153,7 @@
   `;
                     itensContainer.innerHTML += itemHtml;
                 }
+            }
                 });
 
     }
@@ -577,8 +615,8 @@
         display: flex; 
         flex-direction: column;
         align-items: center;
-        border: 3px solid rgb(75, 75, 75);
-
+        
+        padding: 10px; 
         margin-bottom: 10px; 
         border-radius: 10px; 
         background-color: rgb(19, 19, 19); 
@@ -600,6 +638,8 @@
                 <h6>Sua conta:<img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png"
                         width="12px">
                     <%=conta.yen%>
+                    <img src="https://cdn-icons-png.flaticon.com/512/785/785126.png" width="15px">
+                    <%=conta.gems%>
                 </h6>
                 <h3 class="profile-username">
                     <%=conta.username%>

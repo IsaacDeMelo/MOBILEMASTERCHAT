@@ -23,7 +23,12 @@ const Conta = sequelize.define('Conta', {
     yen:{
       type: DataTypes.INTEGER,
       defaultValue: 0,
+    },
+    gems:{
+      type: DataTypes.STRING,
+      defaultValue: 0,
     }
+    
   });
 
 export default Conta;
