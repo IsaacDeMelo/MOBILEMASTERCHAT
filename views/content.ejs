@@ -656,20 +656,16 @@
         <div class="hidden" id="left">
             <div class="Perfil">
                 <a id="icon" href="/configUser/<%=conta.id%>"><img class="icon" src="<%=conta.perfil%>" width="150"
-                        height="150"></a>
-                <h6>Sua conta<p></p><img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png"
-                        width="15px">
-
-                    <%=conta.yen%>
-                    <img src="https://cdn-icons-png.flaticon.com/512/785/785126.png" width="15px">
-                    <%=conta.gems%>
-                </h6>
-                <h6>
-                    
-                </h6>
-                <h3 class="profile-username">
-                    <%=conta.username%>
-                </h3>
+                    height="150"></a>
+            <h6 style="text-align: center;">Sua conta<p></p><img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png"
+                    width="12px">
+                <%=conta.yen%>
+                <img src="https://cdn-icons-png.flaticon.com/512/785/785126.png" width="15px">
+                <%=conta.gems%>
+            </h6>
+            <h4 style="font-size: 20px"class="profile-username">
+                <%=conta.username%>
+            </h4>
                 <form action="/login/content" method="POST">
                     <input type="hidden" name="username" value="<%=conta.username%>">
                     <input type="hidden" name="password" value="<%=conta.password%>">
