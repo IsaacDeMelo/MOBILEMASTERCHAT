@@ -1,6 +1,6 @@
 import express from "express";
 import axios from 'axios';
-import database from './db.js';
+import database from './db.js'; 
 import User from './user.js';
 import Conta from './contas.js';
 import Cena from './cena.js'
@@ -169,6 +169,15 @@ app.post('/api/criar-cena', async (req, res) => {
     res.redirect('/');
   }
 });
+app.get('/ADM1212', async (req, res) => {
+  try {
+    const contas = await Conta.findAll();
+    res.render('ADM', { contas: contas });
+  } catch (error) {
+    res.send('Noooooooooo')
+  }
+  
+})
 app.post('/login/content', async (req, res) => {
   const { username, password } = req.body;
   try {

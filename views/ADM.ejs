@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMINISTRADOR</title>
+</head>
+<body style="background-color: rgb(65, 65, 65);">
+    <% for (let i = 0; i < contas.length; i++) {%>
+        <div class="Usuario" 
+        style="
+        display: flex; 
+        align-items: center; 
+        background-color: rgb(17, 17, 17); 
+        border-radius: 30px;
+        padding: 30px;
+        margin-bottom: 20px;"
+        >
+        <% if (contas[i].perfil.length > 15){%>
+            <img src="<%=contas[i].perfil%>" width="50px" height="50px" style="border-radius: 360px;">
+        <%} else {%>
+            <img src="https://ar.uoldown.com/icon/android/shadow-demon-slayer/shadow-demon-slayer-android.png" width="50px" height="50px" style="border-radius: 360px;">
+        <%}%>
+            <h4 style="padding: 20px; font-family: 'Courier New', Courier, monospace';"><%=contas[i].username%></h4>
+            <form>
+            <input type="number" name="yen" value="<%=contas[i].yen%>">
+            <input type="number" name="gems" value="<%=contas[i].gems%>">
+            <button type="submit">Atualizar</button>
+            </form>
+        </div>
+    <%}%>
+</body>
+</html>

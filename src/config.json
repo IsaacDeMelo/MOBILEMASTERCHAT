@@ -1,0 +1,8 @@
+{
+    "database": "sql10629958",
+    "username": "sql10629958",
+    "password": "BtuQR8aCjP",
+    "host": "sql10.freemysqlhosting.net",
+    "port": 3306,
+    "dialect": "mysql"
+  }
