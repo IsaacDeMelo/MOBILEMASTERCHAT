@@ -66,8 +66,18 @@ app.post('/comprar/item', async (req, res) =>{
   } catch (error){
     console.log(error);
   }
-    
-  
+});
+app.post('/comprar/itemG', async (req, res) =>{
+  var { username, foto } = req.body;
+    const produto = await Produto.findOne({ where: {foto}});
+  try {
+    const conta = await Conta.findOne({ where: {username: username}}); 
+    conta.gems = conta.gems - produto.preço;
+    conta.save();
+    res.render('comprovante', { conta: conta, produto: produto });
+  } catch (error){
+    console.log(error);
+  }
 });
 app.post('/register', async (req, res) => {
   const { username, password, perfil } = req.body;
