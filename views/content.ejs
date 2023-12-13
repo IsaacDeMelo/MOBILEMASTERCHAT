@@ -295,9 +295,9 @@
         align-items: center;
         width: 300px;
         top: 8px;
-        padding: 20px;
+        padding: 5px;
         height: 100vh;
-        background-color: rgb(37, 37, 37);
+        background-color: rgb(255, 255, 255);
         z-index: 6;
     }
 
@@ -333,10 +333,13 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        width: 100%;
+        margin: 5px;
     }
 
     #coment button {
-        border-radius: 360px;
+        border-radius: 10px;
+        margin: 2px;
     }
 
     #coment textarea {
@@ -349,8 +352,10 @@
     }
 
     textarea {
-        width: 258px;
-        border-radius: 10px;
+        width: 100%;
+        padding: 5px;
+        border: none;
+        overflow: hidden;
     }
 
     .botoes {
@@ -388,7 +393,7 @@
     }
 
     h5 {
-        font-size: 7px;
+        font-size: 10px;
         margin-bottom: 10px;
     }
 
@@ -405,15 +410,16 @@
     }
 
     .comment-area {
-        height: 450px;
+        height: 80vh;
         /* Defina a altura desejada para a área de comentários */
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
         /* Adiciona uma barra de rolagem quando necessário */
-        border: 1px solid #000000;
+        border: 1px solid #ffffff;
         /* Adicione uma borda para melhorar a aparência */
         padding: 10px;
         /* Adicione um espaçamento interno */
-        background-color: rgb(22, 22, 22);
+        background-color: #dadada;
         border-radius: 5px;
         width: 100%;
     }
@@ -641,8 +647,15 @@
     .msg{
         border-radius: 10px; 
         margin-bottom: 5px; 
-        padding: 5px; 
-        background-color:rgb(10, 10, 10);
+        padding: 10px; 
+        background-color:rgb(255, 255, 255);
+        border: 2px solid rgb(193, 193, 193);
+        color: black;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .msg p{
+        color: black;
     }
     .nomeCena{
         font-size: 10px;         
@@ -722,7 +735,7 @@
         </div>
         <div>
             <div class="hiddenR" id="right">
-                <p class="h4" style="font-family: 'Courier New', Courier, monospace">Comentários</p>
+                <img src="https://cdn-icons-png.flaticon.com/256/6738/6738367.png" style="padding: 10px; width: 30%">
                 <div id='comentarios-scroll' class="comment-area">
                     <!-- Aqui é onde os comentários serão exibidos -->
                     <% comentario.forEach(function(comentario) { %>
@@ -741,22 +754,22 @@
                 <form id="coment" action="/api/comentarios" method="post">
                     <input type="hidden" id="username" name="username" value="<%=conta.username%>">
                     <input type="hidden" id="perfil" name="perfil" value="<%=conta.perfil%>">
-                    <textarea id="coment-input" name="coment" placeholder="Enviar comentário..." style="width: 200px"></textarea>
+                    <textarea id="coment-input" name="coment" placeholder="Enviar comentário..." style="width: 100%"></textarea>
                     <div class="botoess">
-                        <button type="submit" class="btn btn-success" style="background-color:rgb(59, 59, 59); border-color: rgb(0, 0, 0);">></button>
+                        <button type="submit" class="btn" style="background-color:rgb(10, 10, 10);"><img src="https://cdn-icons-png.flaticon.com/512/4698/4698102.png" width="30px"></button>
                     </div>
                 </form>
                 <form action="/clear-comment" method="POST">
                     <input type="hidden" name="username" value="<%=conta.username%>">
                     <input type="hidden" name="password" value="<%=conta.password%>">
-                    <button type="submit" class="btn-clear btn btn-danger">Deletar</button>
+                    <!-- <button type="submit" class="btn-clear btn btn-danger">Deletar Ultimo Comentario</button> -->
             </div>
             </form>
         </div>
 
-        <button id="showLeftButton" class="btn btn-outline-warning">
+        <button id="showLeftButton" class="btn btn-outline-dark">
             >></button>
-        <button id="showRightButton" class="btn btn-outline-warning">
+        <button id="showRightButton" class="btn btn-outline-dark">
             <<</button>
 
     </body>
