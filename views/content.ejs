@@ -36,8 +36,8 @@
                                 src: cena.perfil,
                                 id: 'perfilCene',
                                 class: 'icon',
-                                width: '50',
-                                height: '50'
+                                width: '75',
+                                height: '75'
                             });
                             var pUsername = $('<p>', {
                                 id: 'userCene',
@@ -48,7 +48,7 @@
                             var imgCena = $('<img>', {
                                 src: cena.img,
                                 id: 'imgDaCena',
-                                width: '250'
+                                width: '90%'
                             });
                             var pTexto = $('<p>', {
                                 id: 'textoCena',
@@ -71,8 +71,8 @@
                                 src: 'https://pbs.twimg.com/media/EpYXtEsWEBA3pLr.jpg',
                                 id: 'perfilCene',
                                 class: 'icon',
-                                width: '50',
-                                height: '50'
+                                width: '75',
+                                height: '75'
                             });
                             var pUsername = $('<p>', {
                                 id: 'userCene',
@@ -82,7 +82,7 @@
                             var imgCena = $('<img>', {
                                 src: cena.img,
                                 id: 'imgDaCena',
-                                width: '250'
+                                width: '90%'
                             });
                             var pTexto = $('<p>', {
                                 id: 'textoCena',
@@ -378,9 +378,10 @@
     }
 
     .cena {
-        margin-top: 10px;
+        margin-top: -10px;
         margin-bottom: 5px;
         display: flex;
+        width: 100%;
         flex-direction: column;
         align-items: center;
         border-radius: 10px;
@@ -391,6 +392,7 @@
 
     .cena form {
         display: flex;
+        width: 100%;
         flex-direction: column;
         align-items: center;
     }
@@ -471,7 +473,9 @@
         color: white;
     }
     .nomeCena{
-        font-size: 10px;
+        font-size: 13px;
+        color: black;
+        font-weight: bolder; 
     }
     input {
         background-color: #131313;
@@ -485,6 +489,7 @@
     .txt {
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
+        width: 100%; 
         border: 1px solid black; 
         background-color: rgb(73, 73, 73);
         color: black;
@@ -494,7 +499,7 @@
     }
 
     .center {
-        padding: 5px;
+
         width: 100vw;
         height: 100vh; 
         background-color: rgb(22, 22, 22);
@@ -542,16 +547,15 @@
 
     .cenas {
         width: 100%;
-        height: 400px;
+        height: 70%;
         overflow-x: hidden;
         padding-left: 20px;
         padding-right: 20px; 
         padding-top: 5px;
         padding-bottom: 30px; 
         background-color: rgb(10, 10, 10);
-        border-left: 5px solid rgb(0, 0, 0);
-        border-right: 5px solid rgb(0, 0, 0);
-        border-radius: 10px; 
+   
+      
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -592,7 +596,7 @@
     #imgDaCena {
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
-        width: 250px;
+        width: 90%;
         border-top: 2px solid black;
         border-left: 2px solid black;
         border-right: 2px solid black;  
@@ -607,7 +611,7 @@
         background-color: #222;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
-        width: 250px;
+        width: 90%;
         padding: 10px;
         font-size: 13px; 
         
@@ -615,6 +619,10 @@
 
     #showLeftButton {
         border-radius: 360px;
+        border: 4px solid black; 
+        color: white;
+        font-weight: 900;
+        font-size: 20px;
         position: absolute;
         left: -20px;
         bottom: 60%;
@@ -623,6 +631,10 @@
 
     #showRightButton {
         border-radius: 360px;
+        border: 4px solid black; 
+        color: white;
+        font-weight: 900;
+        font-size: 20px;
         position: absolute;
         right: -20px;
         bottom: 60%;
@@ -667,7 +679,8 @@
         color: black;
     }
     .nomeCena{
-        font-size: 10px;         
+        font-size: 15px;   
+        font-weight: bolder ;      
     }
 </style>
 <main>
@@ -722,7 +735,7 @@
                         value="<%=conta.username%>">
                     <input type="hidden" name="perfil" placeholder="Perfil (URL)" autocomplete="off"
                         value="<%=conta.perfil%>" required>
-                    <input style="width: 258px;" type="text" name="img" placeholder="Imagem (URL)" autocomplete="off">
+                    <input style="width: 100%;" type="text" name="img" placeholder="Imagem (URL)" autocomplete="off">
                     <input type="hidden" name="fala" placeholder="Digite sua fala aqui" autocomplete="off">
                     <textarea class="txt" name="texto"
                         placeholder="Texto, adicione seus atributos ao final ou durante a cena." autocomplete="off"
