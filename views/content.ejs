@@ -299,7 +299,7 @@
         width: 300px;
         top: 8px;
         padding: 5px;
-        height: 90%;
+        height: 100%;
         background-color: rgb(255, 255, 255);
         z-index: 6;
     }
@@ -758,7 +758,7 @@
                 <form id="coment" action="/api/comentarios" method="post">
                     <input type="hidden" id="username" name="username" value="<%=conta.username%>">
                     <input type="hidden" id="perfil" name="perfil" value="<%=conta.perfil%>">
-                    <textarea id="coment-input" name="coment" placeholder="Enviar comentário..." style="width: 100%"></textarea>
+                    <textarea id="coment-input" name="coment" placeholder="Enviar comentário..." style="width: 100%; margin: 5px; padding: 10px"></textarea>
                     <div class="botoess">
                         <button type="submit" class="btn" style="background-color:rgb(10, 10, 10);"><img src="https://cdn-icons-png.flaticon.com/512/4698/4698102.png" width="30px"></button>
                     </div>
