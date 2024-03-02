@@ -269,9 +269,11 @@
     }
 
     .Perfil {
-        border: 1px solid black;
+        border: 1px solid white;
+        color: black;
+        font-weight: bold;
         border-radius: 10px;
-        background-color: rgb(22, 22, 22);
+        background-color: #dadada;
         padding: 20px;
         display: flex;
         flex-direction: column;
@@ -310,7 +312,7 @@
         width: 300px;
         height: 100vh;
         top: 8px;
-        background-color: rgb(37, 37, 37);
+        background-color: rgb(255, 255, 255);
         z-index: 9;
     }
 
@@ -370,6 +372,7 @@
         border: 1px solid rgb(255, 255, 255);
         padding: 7px;
         border-radius: 20px;
+
         background-color: rgb(10, 10, 10);
     }
 
@@ -379,7 +382,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        
         border-radius: 10px;
         padding: 10px;
         background-color: rgb(10, 10, 10);
@@ -473,14 +475,20 @@
     input {
         background-color: #131313;
         color: white;
-        border-radius: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border: 1px solid black; 
+        padding: 10px;
     }
 
     .txt {
-        border-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border: 1px solid black; 
         background-color: rgb(73, 73, 73);
         color: black;
         height: 70px;
+        padding: 10px;
         font-weight: bold;
     }
 
@@ -546,7 +554,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-image: url(https://images2.alphacoders.com/100/thumbbig-1008472.webp);
+        background-image: url(https://i.pinimg.com/564x/03/b2/dd/03b2dd4aa6c20f38cbf0f39ed231939c.jpg);
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -668,34 +676,29 @@
             <div class="Perfil">
                 <a id="icon" href="/configUser/<%=conta.id%>"><img class="icon" src="<%=conta.perfil%>" width="150"
                     height="150"></a>
-            <h6 style="text-align: center;">Sua conta<p></p><img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png"
+            <h6 style="text-align: center; font-weight: bold;">Sua conta<p></p><img src="https://i.pinimg.com/originals/fa/26/d5/fa26d5039d77c00ea8040bba9ff091fc.png"
                     width="12px">
                 <%=conta.yen%>
                 <img src="https://cdn-icons-png.flaticon.com/512/785/785126.png" width="15px">
                 <%=conta.gems%>
             </h6>
-            <h4 style="font-size: 20px"class="profile-username">
+            <h4 style="font-size: 20px; font-weight: bolder; font-family: 'Segoe UI',Roboto;"class="profile-username">
                 <%=conta.username%>
             </h4>
-                <form action="/login/content" method="POST">
-                    <input type="hidden" name="username" value="<%=conta.username%>">
-                    <input type="hidden" name="password" value="<%=conta.password%>">
-                    <input type="hidden" name="perfil" value="<%=conta.perfil%>">
-                    <button type="submit" class="btn-clear btn btn-outline-warning" id="btnUpdateComment">Atualizar
-                        Pagina</button>
-            </div>
-            </form>
+                
             <div class="multiarea">
+                <code>< / Em Desenvolvimento ></code>
+                <!--
                 <form action="/loja" method="post">
                     <input type="hidden" name="id" value="<%=conta.id%>">
                     <button type="submit" class="btn btn-outline-warning">Loja</button>
                 </form>
+                -->
             </div>
             <a href="/login"><button class="btn btn-danger" id="logout">LogOut</button></a>
         </div>
         </div>
         <div class="center">
-            <h3 style="font-family: 'Courier New', Courier, monospace">Battlefield</h3>
             <div class="cenas">
                 <%for (var i = cena.length - 1; i >= 0; i--){ %>
                     <div class="upperfil">
