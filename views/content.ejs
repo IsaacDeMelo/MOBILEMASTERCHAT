@@ -297,7 +297,7 @@
         flex-direction: column;
         align-items: center;
         width: 300px;
-        top: 8px;
+        top: 1px;
         padding: 5px;
         height: 100%;
         background-color: rgb(255, 255, 255);
@@ -312,7 +312,7 @@
         align-items: center;
         width: 300px;
         height: 100%;
-        top: 8px;
+        top: 1px;
         background-color: rgb(255, 255, 255);
         z-index: 9;
     }
@@ -547,15 +547,13 @@
 
     .cenas {
         width: 100%;
-        height: 70%;
+        height: 100%;
         overflow-x: hidden;
         padding-left: 20px;
         padding-right: 20px; 
         padding-top: 5px;
         padding-bottom: 30px; 
         background-color: rgb(10, 10, 10);
-   
-      
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -660,7 +658,6 @@
         align-items: center;
         margin-top: 20px;
         width: 250px;
-        height: 200px;
     }
     #send:hover{
         background-color: #0c0c0c;
@@ -701,7 +698,17 @@
             </h4>
                 
             <div class="multiarea">
-                <code>< / Em Desenvolvimento ></code>
+                <code style="text-align: center; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+                    <%try{%>
+                    <h4 style="color: white"; >Personagem de <%=conta.username%></h4>
+
+                    <img src="<%=chars.charImg%>" width="175" style="border: 2px solid white; border-radius: 10px;">
+                    <h3><%=chars.charName%></h3>
+                    <h5><%=chars.charDescription%></h5>
+                    <%} catch (error) {%>
+                        < / Em Desenvolvimento >
+                    <%}%>
+                </code>
                 <!--
                 <form action="/loja" method="post">
                     <input type="hidden" name="id" value="<%=conta.id%>">
@@ -729,25 +736,6 @@
                     </p>
                     <% } %>
             </div>
-            <div class="cena">
-                <form id="crea" action="/api/criar-cena" method="POST">
-                    <input type="hidden" name="username" placeholder="Username" autocomplete="off"
-                        value="<%=conta.username%>">
-                    <input type="hidden" name="perfil" placeholder="Perfil (URL)" autocomplete="off"
-                        value="<%=conta.perfil%>" required>
-                    <input style="width: 100%;" type="text" name="img" placeholder="Imagem (URL)" autocomplete="off">
-                    <input type="hidden" name="fala" placeholder="Digite sua fala aqui" autocomplete="off">
-                    <textarea class="txt" name="texto"
-                        placeholder="Texto, adicione seus atributos ao final ou durante a cena." autocomplete="off"
-                        required></textarea>
-                    <button type="submit" class="btn btn-outline-warning" style="margin-top: 10px">Criar Cena</button>
-                </form>
-            </div>
-            <form action="/deleteCena" method="post">
-                <input type="hidden" name="username" value="<%=conta.username%>">
-                <input type="hidden" name="password" value="<%=conta.password%>">
-                <button class="btn btn-danger" type="submit" id="delCene">Deletar Cena</button>
-            </form>
         </div>
         </div>
         <div>

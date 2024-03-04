@@ -2,6 +2,7 @@ import express from "express";
 import axios from 'axios';
 import database from './db.js'; 
 import User from './user.js';
+import Chars from './chars.js';
 import Conta from './contas.js';
 import Cena from './cena.js'
 import Comentario from './comentarios.js'
@@ -15,6 +16,7 @@ app.set('views', './views');
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+await Chars.sync();
 await database.sync();
 app.use((req, res, next) => {
   if (req.body && req.body._method && req.body._method.toUpperCase() === 'PUT') {
@@ -192,11 +194,14 @@ app.post('/login/content', async (req, res) => {
   const { username, password } = req.body;
   try {
     const conta = await Conta.findOne({ where: { username, password } });
+    const id = conta.id;
+    const chars = await Chars.findOne({ where: { id } });
+    console.log(chars);
     const comentario =  await Comentario.findAll();
     const cena = await Cena.findAll();
     const contas = await Conta.findAll();
     if (conta) {
-      res.render('content', { conta: conta, comentario: comentario, cena: cena, contas: contas })
+      res.render('content', { conta: conta, comentario: comentario, cena: cena, contas: contas, chars: chars })
     } else {
       res.send('Invalid username or password');
     }
